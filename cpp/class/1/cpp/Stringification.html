@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Stringification</h1>
+Node: <a href="Stringification.html">Stringification</a>
+Next: <a href="Concatenation.html">Concatenation</a>
+Prev: <a href="Predefined.html">Predefined</a>
+Up: <a href="Macros.html">Macros</a>
+<hr>
+<h3>Stringification</h3>
+<p>
+<i>Stringification</i> means turning a code fragment into a string constant whose contents are the text for the code fragment. For example, stringifying `<samp>foo (z)</samp>' results in `<samp>"foo (z)"</samp>'. <p>
+In the C preprocessor, stringification is an option available when macro arguments are substituted into the macro definition. In the body of the definition, when an argument name appears, the character `<samp>#</samp>' before the name specifies stringification of the corresponding actual argument when it is substituted at that point in the definition. The same argument may be substituted in other places in the definition without stringification if the argument name appears in those places with no `<samp>#</samp>'. <p>
+Here is an example of a macro definition that uses stringification: <p>
+<pre>
+	#define WARN_IF(EXP) \
+	do { if (EXP) \
+	        fprintf (stderr, "Warning: " #EXP "\n"); } \
+	while (0)
+</pre>
+<p>
+Here the actual argument for `<samp>EXP</samp>' is substituted once as given, into the `<samp>if</samp>' statement, and once as stringified, into the argument to `<samp>fprintf</samp>'. The `<samp>do</samp>' and `<samp>while (0)</samp>' are a kludge to make it possible to write `<samp>WARN_IF (<i>arg</i>);</samp>', which the resemblance of `<samp>WARN_IF</samp>' to a function would make C programmers want to do; see  <a href="Swallow_Semicolon.html">Swallow Semicolon</a>. <p>
+The stringification feature is limited to transforming one macro argument into one string constant: there is no way to combine the argument with other text and then stringify it all together. But the example above shows how an equivalent result can be obtained in ANSI Standard C using the feature that adjacent string constants are concatenated as one string constant. The preprocessor stringifies the actual value of `<samp>EXP</samp>' into a separate string constant, resulting in text like <p>
+<pre>
+	do { if (x == 0) \
+	        fprintf (stderr, "Warning: " "x == 0" "\n"); } \
+	while (0)
+</pre>
+<p>
+but the C compiler then sees three consecutive string constants and concatenates them into one, producing effectively <p>
+<pre>
+	do { if (x == 0) \
+	        fprintf (stderr, "Warning: x == 0\n"); } \
+	while (0)
+</pre>
+<p>
+Stringification in C involves more than putting doublequote characters around the fragment; it is necessary to put backslashes in front of all doublequote characters, and all backslashes in string and character constants, in order to get a valid C string constant with the proper contents. Thus, stringifying `<samp>p = "foo\n";</samp>' results in `<samp>"p = \"foo\\n\";"</samp>'. However, backslashes that are not inside of string or character constants are not duplicated: `<samp>\n</samp>' by itself stringifies to `<samp>"\n"</samp>'. <p>
+Whitespace (including comments) in the text being stringified is handled according to precise rules. All leading and trailing whitespace is ignored. Any sequence of whitespace in the middle of the text is converted to a single space in the stringified result. <p>
+<hr>
+Next: <a href="Concatenation.html">Concatenation</a>
+Up: <a href="Macros.html">Macros</a>
+</body></html>

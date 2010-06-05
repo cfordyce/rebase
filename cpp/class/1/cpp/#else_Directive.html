@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - #else Directive</h1>
+Node: <a href="#else_Directive.html">#else Directive</a>
+Next: <a href="#elif_Directive.html">#elif Directive</a>
+Prev: <a href="#if_Directive.html">#if Directive</a>
+Up: <a href="Conditional_Syntax.html">Conditional Syntax</a>
+<hr>
+<h4>The `<samp>#else</samp>' Directive</h4>
+<p>
+The `<samp>#else</samp>' directive can be added to a conditional to provide alternative text to be used if the condition is false. This is what it looks like: <p>
+<pre>
+	#if <i>expression</i>
+	<i>text-if-true</i>
+	#else /* Not <i>expression</i> */
+	<i>text-if-false</i>
+	#endif /* Not <i>expression</i> */
+</pre>
+<p>
+If <i>expression</i> is nonzero, and thus the <i>text-if-true</i> is active, then `<samp>#else</samp>' acts like a failing conditional and the <i>text-if-false</i> is ignored. Contrariwise, if the `<samp>#if</samp>' conditional fails, the <i>text-if-false</i> is considered included. <p>
+<hr>
+Next: <a href="#elif_Directive.html">#elif Directive</a>
+Up: <a href="Conditional_Syntax.html">Conditional Syntax</a>
+</body></html>

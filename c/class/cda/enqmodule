@@ -1,0 +1,365 @@
+/******************************************************************************
+ *
+ * File: enq.c
+ *
+ * Description: Source file for Project 2 functions
+ *
+ * Revision History
+ * Date         Programmer Name     Description
+ * -----------  ------------------  ----------------
+ * 25-Jan-2001  Charles Fordyce     1.1
+ *****************************************************************************/
+/*****************************************************************************
+ * includes
+ *****************************************************************************/
+#include <stdlib.h>
+#include <stddef.h>
+#include <enq.h>
+#include <cda.h>
+
+/*****************************************************************************
+ * Methods, starting with my code, then the given solutions.
+ *****************************************************************************/
+
+CDA_BOOL_t ENQ_is_list_empty(ENQ_ANCHOR_p_t list)
+{
+  CDA_BOOL_t rcode =
+    (list->flink == list ? CDA_TRUE : CDA_FALSE);
+  
+  return rcode;
+}
+
+
+ENQ_ITEM_p_t ENQ_add_head(ENQ_ANCHOR_p_t list, ENQ_ITEM_p_t item)
+{
+  CDA_ASSERT(!ENQ_is_item_enqed(item));
+  
+  list->flink->blink = item;
+  item->flink = list->flink;
+  item->blink = list;
+  list->flink = item;
+
+  return item;
+}
+
+
+ENQ_ITEM_p_t ENQ_add_tail(ENQ_ANCHOR_p_t list, ENQ_ITEM_p_t item)
+{
+  CDA_ASSERT(!ENQ_is_item_enqed(item));
+  
+  item->flink = list;
+  item->blink = list->blink;
+  list->blink->flink = item;
+  list->blink = item;
+
+  return item;
+}
+
+
+ENQ_ITEM_p_t ENQ_add_before(ENQ_ITEM_p_t item, ENQ_ITEM_p_t before)
+{
+  CDA_ASSERT(!ENQ_is_item_enqed(item));
+
+  item->flink = before;
+  item->blink = before->blink;
+  before->blink->flink = item;
+  before->blink = item;
+
+  return item;
+}
+
+
+ENQ_ITEM_p_t ENQ_add_after(ENQ_ITEM_p_t item, ENQ_ITEM_p_t after)
+{
+  CDA_ASSERT(!ENQ_is_item_enqed(item));
+
+  item->blink = after;
+  item->flink = after->flink;
+  after->flink->blink = item;
+  after->flink = item;
+  
+  return item;
+}
+
+
+ENQ_ITEM_p_t ENQ_deq_head(ENQ_ANCHOR_p_t list)
+{
+  ENQ_ITEM_p_t item = list->flink;
+  list->flink = list->flink->flink;
+  list->flink->blink = list;
+  item->flink = item;
+  item->blink = item;
+  
+  return item;
+}     
+
+
+ENQ_ITEM_p_t ENQ_deq_tail(ENQ_ANCHOR_p_t list)
+{
+  ENQ_ITEM_p_t item = list->blink;
+  list->blink = list->blink->blink;
+  list->blink->flink = list;
+  item->flink = item;
+  item->blink = item;
+  
+  return item;
+}
+
+
+ENQ_ANCHOR_p_t ENQ_destroy_list(ENQ_ANCHOR_p_t list)
+{
+  while(!ENQ_is_list_empty(list))
+      ENQ_destroy_item(list->flink);
+  
+  CDA_free(list->name); 
+  CDA_free(list);
+  
+  return NULL;
+}
+
+
+/***************************************************************************
+ *  The given method solutions.
+ ***************************************************************************/
+
+ENQ_ANCHOR_p_t ENQ_create_list(const char *name)
+{
+  ENQ_ANCHOR_p_t list = CDA_NEW(ENQ_ANCHOR_t);
+
+  list->flink = list;
+  list->blink = list;
+  list->name = CDA_NEW_STR_IF(name);
+  return list;
+}
+     
+
+ENQ_ITEM_p_t ENQ_create_item(const char * name, size_t size)
+{
+  ENQ_ITEM_p_t item = (ENQ_ITEM_p_t)CDA_malloc(size);
+  
+  CDA_ASSERT(size >= sizeof(ENQ_ITEM_t));
+  item->flink = item;
+  item->blink = item;
+  item->name = CDA_NEW_STR_IF(name);
+  return item;
+}
+
+
+CDA_BOOL_t ENQ_is_item_enqed(ENQ_ITEM_p_t item)
+{
+  CDA_BOOL_t rcode =
+    (item->flink == item ? CDA_FALSE : CDA_TRUE);
+
+  return rcode;
+}
+
+
+ENQ_ITEM_p_t ENQ_deq_item(ENQ_ITEM_p_t item)
+{
+  item->blink->flink = item->flink;
+  item->flink->blink = item->blink;
+  item->flink = item;
+  item->blink = item;
+  return item;
+}
+
+
+ENQ_ITEM_p_t ENQ_destroy_item(ENQ_ITEM_p_t item)
+{
+  ENQ_deq_item(item);
+  CDA_free(item->name);
+  CDA_free(item);
+  
+  return NULL;
+}
+
+
+ENQ_ANCHOR_p_t ENQ_empty_list(ENQ_ANCHOR_p_t list)
+{
+  while(!ENQ_is_list_empty(list))
+    ENQ_destroy_item(list->flink);
+  
+  return list;
+}
+
+/******************************************************************************
+ *
+ * File: enq.h
+ *
+ * Description: Public Header for ENQ Project
+ *
+ * Revision History
+ * Date         Programmer Name     Description
+ * -----------  ------------------  ----------------
+ * 21-Jan-2001  Charles Fordyce        1.1   
+ *****************************************************************************/
+#ifndef ENQ_H
+#define ENQ_H
+
+/******************************************************************************
+ * Required Includes
+ ******************************************************************************/
+#include <stddef.h>
+#include <stdlib.h>
+#include <cda.h>
+
+/******************************************************************************
+ * Macros
+ ******************************************************************************/
+/* My Macro Solutions */
+#define ENQ_GET_TAIL(list) ((list)->blink)
+#define ENQ_GET_NEXT(item) ((item)->flink)
+#define ENQ_GET_PREV(item) ((item)->blink)
+#define ENQ_GET_ITEM_NAME(item) ((const char *)((item)->name))
+
+/* Given Macro solutions */ 
+#define ENQ_GET_HEAD(list) ((list)->flink)
+#define ENQ_GET_LIST_NAME(list) ((const char *)((list)->name))
+
+/******************************************************************************
+ * Typedefs
+ ******************************************************************************/
+typedef struct enq_item_s
+{
+  struct enq_item_s *flink;
+  struct enq_item_s *blink;
+  char              *name;
+}ENQ_ITEM_t, * ENQ_ITEM_p_t; 
+
+typedef ENQ_ITEM_t ENQ_ANCHOR_t, * ENQ_ANCHOR_p_t;
+
+/***************************************************************************
+ * External Variables
+ **************************************************************************/
+
+/***************************************************************************
+ * Method prototypes, starting with my code first, the given solutions following.
+ **************************************************************************/
+/***************************************************************************
+ * Method: ENQ_is_list_empty
+ * Description: Tells whether the list anchor is pointing to itself.
+ ****************************************************************************/
+CDA_BOOL_t ENQ_is_list_empty(ENQ_ANCHOR_p_t );
+
+/***************************************************************************
+ * Method: ENQ_add_head
+ * Description: Adds a non-enqueued item to the head of the list.
+ ****************************************************************************/
+ENQ_ITEM_p_t ENQ_add_head(ENQ_ANCHOR_p_t, ENQ_ITEM_p_t );
+
+/***************************************************************************
+ * Method: ENQ_add_tail
+ * Description: Adds a non-enqueued item to the tail of the list.
+ ****************************************************************************/
+ENQ_ITEM_p_t ENQ_add_tail(ENQ_ANCHOR_p_t, ENQ_ITEM_p_t );
+
+/***************************************************************************
+ * Method: ENQ_add_after
+ * Description: Adds a non-enqueued item after a given item.
+ ****************************************************************************/
+ENQ_ITEM_p_t ENQ_add_after(ENQ_ITEM_p_t, ENQ_ITEM_p_t );
+
+/***************************************************************************
+ * Method: ENQ_add_before
+ * Description: Adds a non-enqueued item in front of a given item.
+ ****************************************************************************/
+ENQ_ITEM_p_t ENQ_add_before(ENQ_ITEM_p_t, ENQ_ITEM_p_t );
+
+/***************************************************************************
+ * Method: ENQ_deq_head
+ * Description: Removes the item at the head of the list and returns it.
+ ****************************************************************************/
+ENQ_ITEM_p_t ENQ_deq_head(ENQ_ANCHOR_p_t );
+
+/***************************************************************************
+ * Method: ENQ_deq_tail
+ * Description: Removes the item at the tail of the list and returns it.
+ ****************************************************************************/
+ENQ_ITEM_p_t ENQ_deq_tail(ENQ_ANCHOR_p_t );
+
+/***************************************************************************
+ * Method: ENQ_destroy_list
+ * Description: Empties a list, frees list anchor memory and explicitly returns NULL. 
+ ****************************************************************************/
+ENQ_ANCHOR_p_t ENQ_destroy_list(ENQ_ANCHOR_p_t );
+
+
+/***************************************************************************
+ * Prototypes for the given method solutions.
+ ****************************************************************************/
+/***************************************************************************
+ * Method: ENQ_create_list
+ * Description: 
+ ****************************************************************************/
+ENQ_ANCHOR_p_t ENQ_create_list(const char *);
+
+/***************************************************************************
+ * Method: ENQ_create_item
+ * Description: 
+ ****************************************************************************/
+ENQ_ITEM_p_t ENQ_create_item(const char *, size_t);
+
+/***************************************************************************
+ * Method: ENQ_is_item_enqed
+ * Description: 
+ ****************************************************************************/
+CDA_BOOL_t ENQ_is_item_enqed(ENQ_ITEM_p_t );
+
+/***************************************************************************
+ * Method: ENQ_deq_item
+ * Description: 
+ ****************************************************************************/
+ENQ_ITEM_p_t ENQ_deq_item(ENQ_ITEM_p_t );
+
+/***************************************************************************
+ * Method: ENQ_destroy_item
+ * Description: 
+ ****************************************************************************/
+ENQ_ITEM_p_t ENQ_destroy_item(ENQ_ITEM_p_t );
+
+/***************************************************************************
+ * Method: ENQ_empty_list
+ * Description: 
+ ****************************************************************************/
+ENQ_ANCHOR_p_t ENQ_empty_list(ENQ_ANCHOR_p_t );
+
+#endif /* ENQ_H */
+/******************************************************************************
+ *
+ * File: enqp.h
+ *
+ * Description: Private Header for ENQ Project (2)
+ *
+ * Revision History
+ * Date         Programmer Name     Description
+ * -----------  ------------------  ----------------
+ * 21-Jan-2001  Chas Fordyce        1.0    
+ *****************************************************************************/
+
+#ifndef ENQP_H
+
+#define ENQP_H
+
+/******************************************************************************
+ * Required Includes
+ ******************************************************************************/
+
+#include <enq.h>
+
+/******************************************************************************
+ * Macros
+ ******************************************************************************/
+
+/******************************************************************************
+ * Typedefs
+ ******************************************************************************/
+
+/******************************************************************************
+ * External Variables
+ ******************************************************************************/
+
+/******************************************************************************
+ * Prototypes
+ ******************************************************************************/
+
+#endif

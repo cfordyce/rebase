@@ -1,0 +1,9 @@
+Assignment 4 
+
+keep track of each class thats instantiated
+
+static data that is incremented when created
+
+generic class that instantiates classes, calls functions
+
+send message to wrapper class telling which class/function was called, increment var in wrapper class

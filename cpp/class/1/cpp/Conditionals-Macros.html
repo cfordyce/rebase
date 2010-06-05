@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Conditionals-Macros</h1>
+Node: <a href="Conditionals-Macros.html">Conditionals-Macros</a>
+Next: <a href="Assertions.html">Assertions</a>
+Prev: <a href="Deleted_Code.html">Deleted Code</a>
+Up: <a href="Conditionals.html">Conditionals</a>
+<hr>
+<h3>Conditionals and Macros</h3>
+<p>
+Conditionals are useful in connection with macros or assertions, because those are the only ways that an expression's value can vary from one compilation to another. A `<samp>#if</samp>' directive whose expression uses no macros or assertions is equivalent to `<samp>#if 1</samp>' or `<samp>#if 0</samp>'; you might as well determine which one, by computing the value of the expression yourself, and then simplify the program. <p>
+For example, here is a conditional that tests the expression `<samp>BUFSIZE == 1020</samp>', where `<samp>BUFSIZE</samp>' must be a macro. <p>
+<pre>
+	#if BUFSIZE == 1020
+	  printf ("Large buffers!\n");
+	#endif /* BUFSIZE is large */
+</pre>
+<p>
+(Programmers often wish they could test the size of a variable or data type in `<samp>#if</samp>', but this does not work. The preprocessor does not understand <code>sizeof</code> , or typedef names, or even the type keywords such as <code>int</code> .) <p>
+The special operator `<samp>defined</samp>' is used in `<samp>#if</samp>' expressions to test whether a certain name is defined as a macro. Either `<samp>defined <i>name</i></samp>' or `<samp>defined (<i>name</i>)</samp>' is an expression whose value is 1 if <i>name</i> is defined as macro at the current point in the program, and 0 otherwise. For the `<samp>defined</samp>' operator it makes no difference what the definition of the macro is; all that matters is whether there is a definition. Thus, for example, <p>
+<pre>
+	#if defined (vax) || defined (ns16000)
+</pre>
+<p>
+would succeed if either of the names `<samp>vax</samp>' and `<samp>ns16000</samp>' is defined as a macro. You can test the same condition using assertions (see <a href="Assertions.html">Assertions</a>), like this: <p>
+<pre>
+	#if #cpu (vax) || #cpu (ns16000)
+</pre>
+<p>
+If a macro is defined and later undefined with `<samp>#undef</samp>', subsequent use of the `<samp>defined</samp>' operator returns 0, because the name is no longer defined. If the macro is defined again with another `<samp>#define</samp>', `<samp>defined</samp>' will recommence returning 1. <p>
+Conditionals that test whether just one name is defined are very common, so there are two special short conditional directives for this case. <p>
+<dl>
+<dt>
+<code>#ifdef <i>name</i></code> <dd>
+is equivalent to `<samp>#if defined (<i>name</i>)</samp>'. <p>
+<dt>
+<code>#ifndef <i>name</i></code> <dd>
+is equivalent to `<samp>#if ! defined (<i>name</i>)</samp>'. </dl>
+<p>
+Macro definitions can vary between compilations for several reasons. <p>
+<ul>
+<li><p>
+Some macros are predefined on each kind of machine. For example, on a Vax, the name `<samp>vax</samp>' is a predefined macro. On other machines, it would not be defined. <p>
+<li><p>
+Many more macros are defined by system header files. Different systems and machines define different macros, or give them different values. It is useful to test these macros with conditionals to avoid using a system feature on a machine where it is not implemented. <p>
+<li><p>
+Macros are a common way of allowing users to customize a program for different machines or applications. For example, the macro `<samp>BUFSIZE</samp>' might be defined in a configuration file for your program that is included as a header file in each source file. You would use `<samp>BUFSIZE</samp>' in a preprocessing conditional in order to generate different code depending on the chosen configuration. <p>
+<li><p>
+Macros can be defined or undefined with `<samp>-D</samp>' and `<samp>-U</samp>' command options when you compile the program. You can arrange to compile the same source file into two different programs by choosing a macro name to specify which program you want, writing conditionals to test whether or how this macro is defined, and then controlling the state of the macro with compiler command options. See <a href="Invocation.html">Invocation</a>. </ul>
+<p>
+Assertions are usually predefined, but can be defined with preprocessor directives or command-line options. <p>
+<hr>
+Next: <a href="Assertions.html">Assertions</a>
+Up: <a href="Conditionals.html">Conditionals</a>
+</body></html>

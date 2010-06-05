@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Side Effects</h1>
+Node: <a href="Side_Effects.html">Side Effects</a>
+Next: <a href="Self-Reference.html">Self-Reference</a>
+Prev: <a href="Swallow_Semicolon.html">Swallow Semicolon</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+<hr>
+<h4>Duplication of Side Effects</h4>
+<p>
+Many C programs define a macro `<samp>min</samp>', for ``minimum'', like this: <p>
+<pre>
+	#define min(X, Y)  ((X) &lt; (Y) ? (X) : (Y))
+</pre>
+<p>
+When you use this macro with an argument containing a side effect, as shown here, <p>
+<pre>
+	next = min (x + y, foo (z));
+</pre>
+<p>
+it expands as follows: <p>
+<pre>
+	next = ((x + y) &lt; (foo (z)) ? (x + y) : (foo (z)));
+</pre>
+<p>
+where `<samp>x + y</samp>' has been substituted for `<samp>X</samp>' and `<samp>foo (z)</samp>' for `<samp>Y</samp>'. <p>
+The function `<samp>foo</samp>' is used only once in the statement as it appears in the program, but the expression `<samp>foo (z)</samp>' has been substituted twice into the macro expansion. As a result, `<samp>foo</samp>' might be called two times when the statement is executed. If it has side effects or if it takes a long time to compute, the results might not be what you intended. We say that `<samp>min</samp>' is an <i>unsafe</i> macro. <p>
+The best solution to this problem is to define `<samp>min</samp>' in a way that computes the value of `<samp>foo (z)</samp>' only once. The C language offers no standard way to do this, but it can be done with GNU C extensions as follows: <p>
+<pre>
+	#define min(X, Y)                     \
+	({ typeof (X) __x = (X), __y = (Y);   \
+	   (__x &lt; __y) ? __x : __y; })
+</pre>
+<p>
+If you do not wish to use GNU C extensions, the only solution is to be careful when <em>using</em> the macro `<samp>min</samp>'. For example, you can calculate the value of `<samp>foo (z)</samp>', save it in a variable, and use that variable in `<samp>min</samp>': <p>
+<pre>
+	#define min(X, Y)  ((X) &lt; (Y) ? (X) : (Y))
+	...
+	{
+	  int tem = foo (z);
+	  next = min (x + y, tem);
+	}
+</pre>
+<p>
+(where we assume that `<samp>foo</samp>' returns type `<samp>int</samp>'). <p>
+<hr>
+Next: <a href="Self-Reference.html">Self-Reference</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+</body></html>

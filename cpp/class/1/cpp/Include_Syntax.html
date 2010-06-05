@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Include Syntax</h1>
+Node: <a href="Include_Syntax.html">Include Syntax</a>
+Next: <a href="Include_Operation.html">Include Operation</a>
+Prev: <a href="Header_Uses.html">Header Uses</a>
+Up: <a href="Header_Files.html">Header Files</a>
+<hr>
+<h3>The `<samp>#include</samp>' Directive</h3>
+<p>
+Both user and system header files are included using the preprocessing directive `<samp>#include</samp>'. It has three variants: <p>
+<dl>
+<dt>
+<code>#include &lt;<i>file</i>&gt;</code> <dd>
+This variant is used for system header files. It searches for a file named <i>file</i> in a list of directories specified by you, then in a standard list of system directories. You specify directories to search for header files with the command option `<samp>-I</samp>' (see <a href="Invocation.html">Invocation</a>). The option `<samp>-nostdinc</samp>' inhibits searching the standard system directories; in this case only the directories you specify are searched. <p>
+The parsing of this form of `<samp>#include</samp>' is slightly special because comments are not recognized within the `<samp>&lt;...&gt;</samp>'. Thus, in `<samp>#include &lt;x/*y&gt;</samp>' the `<samp>/*</samp>' does not start a comment and the directive specifies inclusion of a system header file named `<tt>x/*y</tt>'. Of course, a header file with such a name is unlikely to exist on Unix, where shell wildcard features would make it hard to manipulate. <p>
+The argument <i>file</i> may not contain a `<samp>&gt;</samp>' character. It may, however, contain a `<samp>&lt;</samp>' character. <p>
+<dt>
+<code>#include "<i>file</i>"</code> <dd>
+This variant is used for header files of your own program. It searches for a file named <i>file</i> first in the current directory, then in the same directories used for system header files. The current directory is the directory of the current input file. It is tried first because it is presumed to be the location of the files that the current input file refers to. (If the `<samp>-I-</samp>' option is used, the special treatment of the current directory is inhibited.) <p>
+The argument <i>file</i> may not contain `<samp>"</samp>' characters. If backslashes occur within <i>file</i>, they are considered ordinary text characters, not escape characters. None of the character escape sequences appropriate to string constants in C are processed. Thus, `<samp>#include "x\n\\y"</samp>' specifies a filename containing three backslashes. It is not clear why this behavior is ever useful, but the ANSI standard specifies it. <p>
+<dt>
+<code>#include <i>anything else</i></code> <dd>
+This variant is called a <i>computed #include</i>. Any `<samp>#include</samp>' directive whose argument does not fit the above two forms is a computed include. The text <i>anything else</i> is checked for macro calls, which are expanded (see <a href="Macros.html">Macros</a>). When this is done, the result must fit one of the above two variants---in particular, the expanded text must in the end be surrounded by either quotes or angle braces. <p>
+This feature allows you to define a macro which controls the file name to be used at a later point in the program. One application of this is to allow a site-specific configuration file for your program to specify the names of the system include files to be used. This can help in porting the program to various operating systems in which the necessary system header files are found in different places. </dl>
+<p>
+<hr>
+Next: <a href="Include_Operation.html">Include Operation</a>
+Up: <a href="Header_Files.html">Header Files</a>
+</body></html>

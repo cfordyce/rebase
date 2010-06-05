@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Assertions</h1>
+Node: <a href="Assertions.html">Assertions</a>
+Next: <a href="#error_Directive.html">#error Directive</a>
+Prev: <a href="Conditionals-Macros.html">Conditionals-Macros</a>
+Up: <a href="Conditionals.html">Conditionals</a>
+<hr>
+<h3>Assertions</h3>
+<p>
+<i>Assertions</i> are a more systematic alternative to macros in writing conditionals to test what sort of computer or system the compiled program will run on. Assertions are usually predefined, but you can define them with preprocessing directives or command-line options. <p>
+The macros traditionally used to describe the type of target are not classified in any way according to which question they answer; they may indicate a hardware architecture, a particular hardware model, an operating system, a particular version of an operating system, or specific configuration options. These are jumbled together in a single namespace. In contrast, each assertion consists of a named question and an answer. The question is usually called the <i>predicate</i>. An assertion looks like this: <p>
+<pre>
+	#<i>predicate</i> (<i>answer</i>)
+</pre>
+<p>
+You must use a properly formed identifier for <i>predicate</i>. The value of <i>answer</i> can be any sequence of words; all characters are significant except for leading and trailing whitespace, and differences in internal whitespace sequences are ignored. Thus, `<samp>x + y</samp>' is different from `<samp>x+y</samp>' but equivalent to `<samp>x + y</samp>'. `<samp>)</samp>' is not allowed in an answer. <p>
+Here is a conditional to test whether the answer <i>answer</i> is asserted for the predicate <i>predicate</i>: <p>
+<pre>
+	#if #<i>predicate</i> (<i>answer</i>)
+</pre>
+<p>
+There may be more than one answer asserted for a given predicate. If you omit the answer, you can test whether <em>any</em> answer is asserted for <i>predicate</i>: <p>
+<pre>
+	#if #<i>predicate</i>
+</pre>
+<p>
+Most of the time, the assertions you test will be predefined assertions. GNU C provides three predefined predicates: <code>system</code> , <code>cpu</code> , and <code>machine</code> . <code>system</code>  is for assertions about the type of software, <code>cpu</code>  describes the type of computer architecture, and <code>machine</code>  gives more information about the computer. For example, on a GNU system, the following assertions would be true: <p>
+<pre>
+	#system (gnu)
+	#system (mach)
+	#system (mach 3)
+	#system (mach 3.<i>subversion</i>)
+	#system (hurd)
+	#system (hurd <i>version</i>)
+</pre>
+<p>
+and perhaps others. The alternatives with more or less version information let you ask more or less detailed questions about the type of system software. <p>
+On a Unix system, you would find <code>#system (unix)</code>  and perhaps one of: <code>#system (aix)</code> , <code>#system (bsd)</code> , <code>#system (hpux)</code> , <code>#system (lynx)</code> , <code>#system (mach)</code> , <code>#system (posix)</code> , <code>#system (svr3)</code> , <code>#system (svr4)</code> , or <code>#system (xpg4)</code>  with possible version numbers following. <p>
+Other values for <code>system</code>  are <code>#system (mvs)</code>  and <code>#system (vms)</code> . <p>
+<strong>Portability note:</strong> Many Unix C compilers provide only one answer for the <code>system</code>  assertion: <code>#system (unix)</code> , if they support assertions at all. This is less than useful. <p>
+An assertion with a multi-word answer is completely different from several assertions with individual single-word answers. For example, the presence of <code>system (mach 3.0)</code>  does not mean that <code>system (3.0)</code>  is true. It also does not directly imply <code>system (mach)</code> , but in GNU C, that last will normally be asserted as well. <p>
+The current list of possible assertion values for <code>cpu</code>  is: <code>#cpu (a29k)</code> , <code>#cpu (alpha)</code> , <code>#cpu (arm)</code> , <code>#cpu (clipper)</code> , <code>#cpu (convex)</code> , <code>#cpu (elxsi)</code> , <code>#cpu (tron)</code> , <code>#cpu (h8300)</code> , <code>#cpu (i370)</code> , <code>#cpu (i386)</code> , <code>#cpu (i860)</code> , <code>#cpu (i960)</code> , <code>#cpu (m68k)</code> , <code>#cpu (m88k)</code> , <code>#cpu (mips)</code> , <code>#cpu (ns32k)</code> , <code>#cpu (hppa)</code> , <code>#cpu (pyr)</code> , <code>#cpu (ibm032)</code> , <code>#cpu (rs6000)</code> , <code>#cpu (sh)</code> , <code>#cpu (sparc)</code> , <code>#cpu (spur)</code> , <code>#cpu (tahoe)</code> , <code>#cpu (vax)</code> , <code>#cpu (we32000)</code> . <p>
+You can create assertions within a C program using `<samp>#assert</samp>', like this: <p>
+<pre>
+	#assert <i>predicate</i> (<i>answer</i>)
+</pre>
+<p>
+(Note the absence of a `<samp>#</samp>' before <i>predicate</i>.) <p>
+Each time you do this, you assert a new true answer for <i>predicate</i>. Asserting one answer does not invalidate previously asserted answers; they all remain true. The only way to remove an assertion is with `<samp>#unassert</samp>'. `<samp>#unassert</samp>' has the same syntax as `<samp>#assert</samp>'. You can also remove all assertions about <i>predicate</i> like this: <p>
+<pre>
+	#unassert <i>predicate</i>
+</pre>
+<p>
+You can also add or cancel assertions using command options when you run <code>gcc</code>  or <code>cpp</code> . See <a href="Invocation.html">Invocation</a>. <p>
+<hr>
+Next: <a href="#error_Directive.html">#error Directive</a>
+Up: <a href="Conditionals.html">Conditionals</a>
+</body></html>

@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Top</h1>
+Node: <a href="Top.html">Top</a>
+Next: <a href="Global_Actions.html">Global Actions</a>
+Up: <a href="../index.html">(DIR)</a>
+<hr>
+<h2>The C Preprocessor</h2>
+<p>
+The C preprocessor is a <i>macro processor</i> that is used automatically by the C compiler to transform your program before actual compilation. It is called a macro processor because it allows you to define <i>macros</i>, which are brief abbreviations for longer constructs. <p>
+The C preprocessor provides four separate facilities that you can use as you see fit: <p>
+<ul>
+<li><p>
+Inclusion of header files. These are files of declarations that can be substituted into your program. <p>
+<li><p>
+Macro expansion. You can define <i>macros</i>, which are abbreviations for arbitrary fragments of C code, and then the C preprocessor will replace the macros with their definitions throughout the program. <p>
+<li><p>
+Conditional compilation. Using special preprocessing directives, you can include or exclude parts of the program according to various conditions. <p>
+<li><p>
+Line control. If you use a program to combine or rearrange source files into an intermediate file which is then compiled, you can use line control to inform the compiler of where each source line originally came from. </ul>
+<p>
+C preprocessors vary in some details. This manual discusses the GNU C preprocessor, the C Compatible Compiler Preprocessor. The GNU C preprocessor provides a superset of the features of ANSI Standard C. <p>
+ANSI Standard C requires the rejection of many harmless constructs commonly used by today's C programs. Such incompatibility would be inconvenient for users, so the GNU C preprocessor is configured to accept these constructs by default. Strictly speaking, to get ANSI Standard C, you must use the options `<samp>-trigraphs</samp>', `<samp>-undef</samp>' and `<samp>-pedantic</samp>', but in practice the consequences of having strict ANSI Standard C make it undesirable to do this. See <a href="Invocation.html">Invocation</a>. <p>
+<table>
+<tr><td align=left valign=top><a href="Global_Actions.html">Global Actions</a> <td align=left valign=top>Actions made uniformly on all input files.<br>
+<tr><td align=left valign=top><a href="Directives.html">Directives</a> <td align=left valign=top>General syntax of preprocessing directives.<br>
+<tr><td align=left valign=top><a href="Header_Files.html">Header Files</a> <td align=left valign=top>How and why to use header files.<br>
+<tr><td align=left valign=top><a href="Macros.html">Macros</a> <td align=left valign=top>How and why to use macros.<br>
+<tr><td align=left valign=top><a href="Conditionals.html">Conditionals</a> <td align=left valign=top>How and why to use conditionals.<br>
+<tr><td align=left valign=top><a href="Combining_Sources.html">Combining Sources</a> <td align=left valign=top>Use of line control when you combine source files.<br>
+<tr><td align=left valign=top><a href="Other_Directives.html">Other Directives</a> <td align=left valign=top>Miscellaneous preprocessing directives.<br>
+<tr><td align=left valign=top><a href="Output.html">Output</a> <td align=left valign=top>Format of output from the C preprocessor.<br>
+<tr><td align=left valign=top><a href="Invocation.html">Invocation</a> <td align=left valign=top>How to invoke the preprocessor; command options.<br>
+<tr><td align=left valign=top><a href="Concept_Index.html">Concept Index</a> <td align=left valign=top>Index of concepts and terms.<br>
+<tr><td align=left valign=top><a href="Index.html">Index</a> <td align=left valign=top>Index of directives, predefined macros and options.<br>
+</table>
+<p>
+<hr>
+Next: <a href="Global_Actions.html">Global Actions</a>
+Up: <a href="../index.html">(DIR)</a>
+</body></html>

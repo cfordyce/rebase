@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Once-Only</h1>
+Node: <a href="Once-Only.html">Once-Only</a>
+Next: <a href="Inheritance.html">Inheritance</a>
+Prev: <a href="Include_Operation.html">Include Operation</a>
+Up: <a href="Header_Files.html">Header Files</a>
+<hr>
+<h3>Once-Only Include Files</h3>
+<p>
+Very often, one header file includes another. It can easily result that a certain header file is included more than once. This may lead to errors, if the header file defines structure types or typedefs, and is certainly wasteful. Therefore, we often wish to prevent multiple inclusion of a header file. <p>
+The standard way to do this is to enclose the entire real contents of the file in a conditional, like this: <p>
+<pre>
+	#ifndef FILE_FOO_SEEN
+	#define FILE_FOO_SEEN
+	
+	<i>the entire file</i>
+	
+	#endif /* FILE_FOO_SEEN */
+</pre>
+<p>
+The macro <code>FILE_FOO_SEEN</code>  indicates that the file has been included once already. In a user header file, the macro name should not begin with `<samp>_</samp>'. In a system header file, this name should begin with `<samp>__</samp>' to avoid conflicts with user programs. In any kind of header file, the macro name should contain the name of the file and some additional text, to avoid conflicts with other header files. <p>
+The GNU C preprocessor is programmed to notice when a header file uses this particular construct and handle it efficiently. If a header file is contained entirely in a `<samp>#ifndef</samp>' conditional, then it records that fact. If a subsequent `<samp>#include</samp>' specifies the same file, and the macro in the `<samp>#ifndef</samp>' is already defined, then the file is entirely skipped, without even reading it. <p>
+There is also an explicit directive to tell the preprocessor that it need not include a file more than once. This is called `<samp>#pragma once</samp>', and was used <em>in addition to</em> the `<samp>#ifndef</samp>' conditional around the contents of the header file. `<samp>#pragma once</samp>' is now obsolete and should not be used at all. <p>
+In the Objective C language, there is a variant of `<samp>#include</samp>' called `<samp>#import</samp>' which includes a file, but does so at most once. If you use `<samp>#import</samp>' <em>instead of</em> `<samp>#include</samp>', then you don't need the conditionals inside the header file to prevent multiple execution of the contents. <p>
+`<samp>#import</samp>' is obsolete because it is not a well designed feature. It requires the users of a header file---the applications programmers---to know that a certain header file should only be included once. It is much better for the header file's implementor to write the file so that users don't need to know this. Using `<samp>#ifndef</samp>' accomplishes this goal. <p>
+<hr>
+Next: <a href="Inheritance.html">Inheritance</a>
+Up: <a href="Header_Files.html">Header Files</a>
+</body></html>

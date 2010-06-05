@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Other Directives</h1>
+Node: <a href="Other_Directives.html">Other Directives</a>
+Next: <a href="Output.html">Output</a>
+Prev: <a href="Combining_Sources.html">Combining Sources</a>
+Up: <a href="Top.html">Top</a>
+<hr>
+<h3>Miscellaneous Preprocessing Directives</h3>
+<p>
+This section describes three additional preprocessing directives. They are not very useful, but are mentioned for completeness. <p>
+The <i>null directive</i> consists of a `<samp>#</samp>' followed by a Newline, with only whitespace (including comments) in between. A null directive is understood as a preprocessing directive but has no effect on the preprocessor output. The primary significance of the existence of the null directive is that an input line consisting of just a `<samp>#</samp>' will produce no output, rather than a line of output containing just a `<samp>#</samp>'. Supposedly some old C programs contain such lines. <p>
+The ANSI standard specifies that the `<samp>#pragma</samp>' directive has an arbitrary, implementation-defined effect. In the GNU C preprocessor, `<samp>#pragma</samp>' directives are not used, except for `<samp>#pragma once</samp>' (see <a href="Once-Only.html">Once-Only</a>). However, they are left in the preprocessor output, so they are available to the compilation pass. <p>
+The `<samp>#ident</samp>' directive is supported for compatibility with certain other systems. It is followed by a line of text. On some systems, the text is copied into a special place in the object file; on most systems, the text is ignored and this directive has no effect. Typically `<samp>#ident</samp>' is only used in header files supplied with those systems where it is meaningful. <p>
+<hr>
+Next: <a href="Output.html">Output</a>
+Up: <a href="Top.html">Top</a>
+</body></html>

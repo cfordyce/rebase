@@ -1,0 +1,18 @@
+Assignment 2
+
+2-1 Define an overloaded function add() that will accept two ints, floats, chars, bools or strings as arguments and return the result of "adding" the arguments. Be
+certain to explain what addition means in each case.
+
+2-2 Define a simple class with a constructor and a destructor. Annotate each such that it writes to stdout each time it is invoked. Declare and use an instance of
+the class in function main, in a function f1 called from main, and in a function f2, called from f1. Annotate main, f1, and f2 as well such that they write to stdout at
+function entry and function exit. 
+
+Instantiate your class on the stack in main and function f1. Instantiate your class on the heap (using new and delete) in function f2.
+
+2-3 Define a class Histogram that keeps count of the number of alphas (letter or digit), digits (0-9), punctuation, and white space (\t, \v, \f, \r, or \n) characters
+in an input stream (or file, if you want to). Define member functions to show any or all of the components of the histogram. You may use standard C character
+library functions or macros such as isalpha().
+
+2-4 Create the class ElasticString to encapsulate strings that can grow or shrink on demand. The class should support constructing the class from a char*,
+concatenating another char* string to the end of the string, appending a single character to the end of the string, truncating a number of characters from the end
+of the string, and displaying the string. You may use standard C string library functions or macros such as strcat().

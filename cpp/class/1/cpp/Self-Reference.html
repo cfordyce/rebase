@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Self-Reference</h1>
+Node: <a href="Self-Reference.html">Self-Reference</a>
+Next: <a href="Argument_Prescan.html">Argument Prescan</a>
+Prev: <a href="Side_Effects.html">Side Effects</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+<hr>
+<h4>Self-Referential Macros</h4>
+<p>
+A <i>self-referential</i> macro is one whose name appears in its definition. A special feature of ANSI Standard C is that the self-reference is not considered a macro call. It is passed into the preprocessor output unchanged. <p>
+Let's consider an example: <p>
+<pre>
+	#define foo (4 + foo)
+</pre>
+<p>
+where `<samp>foo</samp>' is also a variable in your program. <p>
+Following the ordinary rules, each reference to `<samp>foo</samp>' will expand into `<samp>(4 + foo)</samp>'; then this will be rescanned and will expand into `<samp>(4 + (4 + foo))</samp>'; and so on until it causes a fatal error (memory full) in the preprocessor. <p>
+However, the special rule about self-reference cuts this process short after one step, at `<samp>(4 + foo)</samp>'. Therefore, this macro definition has the possibly useful effect of causing the program to add 4 to the value of `<samp>foo</samp>' wherever `<samp>foo</samp>' is referred to. <p>
+In most cases, it is a bad idea to take advantage of this feature. A person reading the program who sees that `<samp>foo</samp>' is a variable will not expect that it is a macro as well. The reader will come across the identifier `<samp>foo</samp>' in the program and think its value should be that of the variable `<samp>foo</samp>', whereas in fact the value is four greater. <p>
+The special rule for self-reference applies also to <i>indirect</i> self-reference. This is the case where a macro <i>x</i> expands to use a macro `<samp>y</samp>', and the expansion of `<samp>y</samp>' refers to the macro `<samp>x</samp>'. The resulting reference to `<samp>x</samp>' comes indirectly from the expansion of `<samp>x</samp>', so it is a self-reference and is not further expanded. Thus, after <p>
+<pre>
+	#define x (4 + y)
+	#define y (2 * x)
+</pre>
+<p>
+`<samp>x</samp>' would expand into `<samp>(4 + (2 * x))</samp>'. Clear? <p>
+But suppose `<samp>y</samp>' is used elsewhere, not from the definition of `<samp>x</samp>'. Then the use of `<samp>x</samp>' in the expansion of `<samp>y</samp>' is not a self-reference because `<samp>x</samp>' is not ``in progress''. So it does expand. However, the expansion of `<samp>x</samp>' contains a reference to `<samp>y</samp>', and that is an indirect self-reference now because `<samp>y</samp>' is ``in progress''. The result is that `<samp>y</samp>' expands to `<samp>(2 * (4 + y))</samp>'. <p>
+It is not clear that this behavior would ever be useful, but it is specified by the ANSI C standard, so you may need to understand it. <p>
+<hr>
+Next: <a href="Argument_Prescan.html">Argument Prescan</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+</body></html>

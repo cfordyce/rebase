@@ -1,0 +1,110 @@
+-------------------------------------------------------------------------------
+File: hash_dox.txt
+
+Description: Public Readme Document for HASH Module - Project 5
+
+Revision History
+Date         Programmer Name     Description
+-----------  ------------------  ----------------
+24-Feb-2001  Charles Fordyce        1.0
+------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------
+			Public Methods Notes
+------------------------------------------------------------------------------
+
+HASH.1.1  HASH_create_hash
+
+This method creates a new hash table and returns the ID of the table to be used
+in all subsequent hash table operations.  The hash table will be initialized to
+be empty.
+
+   Synopsis: 
+   HASH_ID_t HASH_create_hash( const char *, CDA_UINT32_t );
+
+   Where: 
+
+   Returns: 
+   hash id 
+   
+   Exceptions: 
+   Throws SIGABRT if table can't be created 
+   
+   Notes: 
+   
+
+
+
+HASH.1.2  HASH_add_item
+
+
+
+   Synopsis: 
+   HASH_ITEM_p_t HASH_add_item( void *value, CDA_UINT32_t priority ); 
+
+
+   Where: 
+
+   Returns: 
+   hash id 
+   
+   Exceptions: 
+   Throws SIGABRT if table can't be created 
+   
+   Notes:
+
+
+
+HASH.1.3  HASH_find_item
+
+
+   Synopsis: 
+   CDA_BOOL_t HASH_find_item( HASH_ID_t queue );
+
+   Where: 
+
+   Returns: 
+   hash id 
+   
+   Exceptions: 
+   Throws SIGABRT if table can't be created 
+   
+   Notes:
+
+
+
+HASH.1.4  HASH_delete_item
+
+
+
+   Synopsis: 
+   HASH_delete_item( HASH_ID_t queue, HASH_ITEM_p_t item );
+
+   Where: 
+
+   Returns: 
+   hash id 
+   
+   Exceptions: 
+   Throws SIGABRT if table can't be created 
+   
+   Notes:
+
+
+
+HASH.1.5  HASH_destroy_hash
+
+
+   Synopsis: 
+   HASH_ID_t HASH_destroy_hash( HASH_ID_t hash, HASH_DESTROY_PROC_p_t destroy_proc );
+
+   Where: 
+
+   Returns: 
+   hash id 
+   
+   Exceptions: 
+   Throws SIGABRT if table can't be created 
+   
+   Notes:

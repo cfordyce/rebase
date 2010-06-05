@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Deleted Code</h1>
+Node: <a href="Deleted_Code.html">Deleted Code</a>
+Next: <a href="Conditionals-Macros.html">Conditionals-Macros</a>
+Prev: <a href="Conditional_Syntax.html">Conditional Syntax</a>
+Up: <a href="Conditionals.html">Conditionals</a>
+<hr>
+<h3>Keeping Deleted Code for Future Reference</h3>
+<p>
+If you replace or delete a part of the program but want to keep the old code around as a comment for future reference, the easy way to do this is to put `<samp>#if 0</samp>' before it and `<samp>#endif</samp>' after it. This is better than using comment delimiters `<samp>/*</samp>' and `<samp>*/</samp>' since those won't work if the code already contains comments (C comments do not nest). <p>
+This works even if the code being turned off contains conditionals, but they must be entire conditionals (balanced `<samp>#if</samp>' and `<samp>#endif</samp>'). <p>
+Conversely, do not use `<samp>#if 0</samp>' for comments which are not C code. Use the comment delimiters `<samp>/*</samp>' and `<samp>*/</samp>' instead. The interior of `<samp>#if 0</samp>' must consist of complete tokens; in particular, singlequote characters must balance. But comments often contain unbalanced singlequote characters (known in English as apostrophes). These confuse `<samp>#if 0</samp>'. They do not confuse `<samp>/*</samp>'. <p>
+<hr>
+Next: <a href="Conditionals-Macros.html">Conditionals-Macros</a>
+Up: <a href="Conditionals.html">Conditionals</a>
+</body></html>

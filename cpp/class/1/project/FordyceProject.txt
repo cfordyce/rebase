@@ -1,0 +1,99 @@
+Charles Fordyce
+Project Proposal
+
+
+My project will be to create a lightweight (not exhaustive), simple to use, C++ CGI/HTML module. Users of this module will be able to send,receive and process HTML webpages that contain standard HTML forms. Webpages will be restricted to transferring text/html only (other file types will not be supported.  Standard HTML forms consists of a widgets like a textbox, pull-down list or radio button group. A form widget's state is defined by a key/value pair.  The module will hande URL-encoding; both in receiving and submitting data to the web.  URL-encoding refers to the hexadecimal conversion of meta-characters in the URL string; i.e.: %26 is the hex value for ampersand &. 
+The module will also provide a (minimal) set of shortcut methods to generate common HTML tags. These methods will save the user time and reduce HTML coding errors.  The module will provide shortcuts the following commonly used HTML tags; <HTML>,<HEAD>,<TITLE>,<BODY>,<H1>,<H2>,<H3>,<H4> and <HREF>. The user of the module will have to instantiate the objects they need and apply them.
+The final piece of the project will be to desing and implement a web-based sign-in page.  The sign-in page will consist of 3 fields; Name, Age and Occupation. The software will be responsible for keeping track of all the users that are currently signed in.  
+
+-----------------------------------------------
+The CGI class will perform the following tasks:
+-----------------------------------------------
+(see accompanying UML for more info)
+
+ + When receiving data FROM the browser
+
+    - Collect and store the following HTTP environment variables (passed from the browser).
+      The class will provide "get" methods for them as well.
+	     - REQUEST_METHOD (GET/POST)
+	       - stored as a <string>.
+
+	     - QUERY_STRING (form parameters)
+	       - stored in a <map> to retain natural key=value form
+
+	     - CONTENT_TYPE (the module will only accept: text/html)
+	       - stored as a <string>.
+
+	     - HTTP_USER_AGENT (just for fun)
+	       - stored as a <string>.
+
+    - Decode URL-encoded data in the QUERY_STRING variable.
+
+    - Param.  Return a value for a specific key in the QUERY_STRING map.
+
+
+ + When sending data TO the browser
+    
+    - Assemble the HTTP header string and send to browser:
+          - "Content-type: text/html\n\n"
+
+
+-----------------------------------------------------
+The HTML class will provide the following operations:
+-----------------------------------------------------
+(see accompanying UML for more info)
+
+    + string Html::header(string t=Html::titleString)
+
+	- Assemble a "header" section of HTML that consists of
+	  the tags below.  The user may populate the TITLE tag by sending a 
+	  string reference via the constructor. There will be no default title value.
+	  - <HTML>
+	  - <HEAD></HEAD>
+	  - <TITLE>(???)</TITLE>
+	  - <BODY>
+	    
+	  
+    + string Html::footer()
+
+	- Assemble a "footer" section of HTML that consists of
+	  the tags below:
+	  - </BODY>
+	  - </HTML>
+
+
+    + string Html::hn(string, int =2)
+
+	- Assemble an Hn (title) tag. The user may specify the size
+	  (1 - 4). The size and string to be displayed will be passed
+	  as arguments 1 and 2 respectively. The output will be one of these:
+	  - <H1>string (prints very large, bold text)
+	  - <H2>string
+	  - <H3>string
+	  - <H4>string (prints average/small, bold text)
+    
+
+    + string HTML::link(string, string)
+
+	- Assemble a hyperlink tag.  The user must supply a fully qualified
+	  web address and the link text as strings.  The address will be prefixed by, "http://".
+	  The output will look like this:
+	  - <A HREF="http://www.someplace.org">Link Text Here</A>
+
+
+---------------------------------------------------------
+The UserData class will provide the following operations:
+---------------------------------------------------------
+(see accompanying UML for more info)
+
+    + string UserData::get_user_name()
+
+	- Accessor function for user_name member variable.
+
+    + string UserData::get_user_job()
+       
+        - Accessor function for user_job member variable.
+
+    + int UserData::get_user_age()
+
+        - Accessor function for user_age member variable

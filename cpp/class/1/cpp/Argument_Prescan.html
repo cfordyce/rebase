@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Argument Prescan</h1>
+Node: <a href="Argument_Prescan.html">Argument Prescan</a>
+Next: <a href="Cascaded_Macros.html">Cascaded Macros</a>
+Prev: <a href="Self-Reference.html">Self-Reference</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+<hr>
+<h4>Separate Expansion of Macro Arguments</h4>
+<p>
+We have explained that the expansion of a macro, including the substituted actual arguments, is scanned over again for macro calls to be expanded. <p>
+What really happens is more subtle: first each actual argument text is scanned separately for macro calls. Then the results of this are substituted into the macro body to produce the macro expansion, and the macro expansion is scanned again for macros to expand. <p>
+The result is that the actual arguments are scanned <em>twice</em> to expand macro calls in them. <p>
+Most of the time, this has no effect. If the actual argument contained any macro calls, they are expanded during the first scan. The result therefore contains no macro calls, so the second scan does not change it. If the actual argument were substituted as given, with no prescan, the single remaining scan would find the same macro calls and produce the same results. <p>
+You might expect the double scan to change the results when a self-referential macro is used in an actual argument of another macro (see <a href="Self-Reference.html">Self-Reference</a>): the self-referential macro would be expanded once in the first scan, and a second time in the second scan. But this is not what happens. The self-references that do not expand in the first scan are marked so that they will not expand in the second scan either. <p>
+The prescan is not done when an argument is stringified or concatenated. Thus, <p>
+<pre>
+	#define str(s) #s
+	#define foo 4
+	str (foo)
+</pre>
+<p>
+expands to `<samp>"foo"</samp>'. Once more, prescan has been prevented from having any noticeable effect. <p>
+More precisely, stringification and concatenation use the argument as written, in un-prescanned form. The same actual argument would be used in prescanned form if it is substituted elsewhere without stringification or concatenation. <p>
+<pre>
+	#define str(s) #s lose(s)
+	#define foo 4
+	str (foo)
+</pre>
+<p>
+expands to `<samp>"foo" lose(4)</samp>'. <p>
+You might now ask, ``Why mention the prescan, if it makes no difference? And why not skip it and make the preprocessor faster?'' The answer is that the prescan does make a difference in three special cases: <p>
+<ul>
+<li><p>
+Nested calls to a macro. <p>
+<li><p>
+Macros that call other macros that stringify or concatenate. <p>
+<li><p>
+Macros whose expansions contain unshielded commas. </ul>
+<p>
+We say that <i>nested</i> calls to a macro occur when a macro's actual argument contains a call to that very macro. For example, if `<samp>f</samp>' is a macro that expects one argument, `<samp>f (f (1))</samp>' is a nested pair of calls to `<samp>f</samp>'. The desired expansion is made by expanding `<samp>f (1)</samp>' and substituting that into the definition of `<samp>f</samp>'. The prescan causes the expected result to happen. Without the prescan, `<samp>f (1)</samp>' itself would be substituted as an actual argument, and the inner use of `<samp>f</samp>' would appear during the main scan as an indirect self-reference and would not be expanded. Here, the prescan cancels an undesirable side effect (in the medical, not computational, sense of the term) of the special rule for self-referential macros. <p>
+But prescan causes trouble in certain other cases of nested macro calls. Here is an example: <p>
+<pre>
+	#define foo  a,b
+	#define bar(x) lose(x)
+	#define lose(x) (1 + (x))
+	
+	bar(foo)
+</pre>
+<p>
+We would like `<samp>bar(foo)</samp>' to turn into `<samp>(1 + (foo))</samp>', which would then turn into `<samp>(1 + (a,b))</samp>'. But instead, `<samp>bar(foo)</samp>' expands into `<samp>lose(a,b)</samp>', and you get an error because <code>lose</code>  requires a single argument. In this case, the problem is easily solved by the same parentheses that ought to be used to prevent misnesting of arithmetic operations: <p>
+<pre>
+	#define foo (a,b)
+	#define bar(x) lose((x))
+</pre>
+<p>
+The problem is more serious when the operands of the macro are not expressions; for example, when they are statements. Then parentheses are unacceptable because they would make for invalid C code: <p>
+<pre>
+	#define foo { int a, b; ... }
+</pre>
+<p>
+In GNU C you can shield the commas using the `<samp>({...})</samp>' construct which turns a compound statement into an expression: <p>
+<pre>
+	#define foo ({ int a, b; ... })
+</pre>
+<p>
+Or you can rewrite the macro definition to avoid such commas: <p>
+<pre>
+	#define foo { int a; int b; ... }
+</pre>
+<p>
+There is also one case where prescan is useful. It is possible to use prescan to expand an argument and then stringify it---if you use two levels of macros. Let's add a new macro `<samp>xstr</samp>' to the example shown above: <p>
+<pre>
+	#define xstr(s) str(s)
+	#define str(s) #s
+	#define foo 4
+	xstr (foo)
+</pre>
+<p>
+This expands into `<samp>"4"</samp>', not `<samp>"foo"</samp>'. The reason for the difference is that the argument of `<samp>xstr</samp>' is expanded at prescan (because `<samp>xstr</samp>' does not specify stringification or concatenation of the argument). The result of prescan then forms the actual argument for `<samp>str</samp>'. `<samp>str</samp>' uses its argument without prescan because it performs stringification; but it cannot prevent or undo the prescanning already done by `<samp>xstr</samp>'. <p>
+<hr>
+Next: <a href="Cascaded_Macros.html">Cascaded Macros</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+</body></html>

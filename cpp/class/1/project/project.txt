@@ -1,0 +1,32 @@
+Project
+
+ A project is assigned for the last three weeks of class that is the equivalent of three weeks of homework. The project is to be based upon a practical problem of the student's choice and is to be summarized in a five to ten minute presentation on the final day of class. The project must be written in C++ and implemented as an object-oriented design.
+
+ Project Proposal
+
+ A project proposal is due in Week 6. The proposal should include a statement of the problem (a "software requirements specification"), and a description of how  the problem will be solved (a "software design description"). The proposal should be about two pages in length.
+
+ Software Requirements Specification
+
+ Describe what the program will do. Focus on what the purpose of the program is. Describe how the program will be started up. This should be a description of the  program from the point of view of the end-user, and should not cover the internal composition or data structures of the program.
+
+ Software Design Description
+
+ Describe the internals of the program, including data structures and control structures. For an object-oriented design, describe many of the important classes that will be used, and describe the interfaces and data members of each class. You are encouraged to use the UML. Each project should implement at least three or four distinct objects with at least three or four methods each (in addition to the required ctor/dtor/copy ctor/assignment op/equality op/stream ops).
+
+ Object-oriented design
+
+ The project design should identify and describe C++ objects that will be used during implementation. To identify objects, look for elements of the problem that have behavior (methods) and state or properties (data members). Typically, objects will be nouns, not verbs. A useful exercise is to read your software requirements specification, and circle the nouns. Each noun is a candidate to be an object.
+
+ Once objects are identified, start to list the characteristics of each object. These characteristics will become the data members of the class that implements the object.
+
+ Then, list the operations that each object should perform.
+
+ Lastly, examine how objects relate. Try to identify which objects will be used by other objects, and how they will be used. Alternatively, try to identify which objects will need to use other objects, and what services they will need. List services that each object must provide. The operations and services  will become the methods of the class the implements the object.
+
+ Project Presentation
+
+ Each student should prepare a five- to ten-minute presentation (using overhead transparencies) about his or her project, to be presented to the class on the last day of class.
+
+ The presentation should include information on the specification and design of the program. There should also be some discussion of the difficulties encountered while implementing the project, and how they were overcome.
+

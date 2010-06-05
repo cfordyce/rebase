@@ -1,0 +1,24 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Directives</h1>
+Node: <a href="Directives.html">Directives</a>
+Next: <a href="Header_Files.html">Header Files</a>
+Prev: <a href="Global_Actions.html">Global Actions</a>
+Up: <a href="Top.html">Top</a>
+<hr>
+<h3>Preprocessing Directives</h3>
+<p>
+Most preprocessor features are active only if you use preprocessing directives to request their use. <p>
+Preprocessing directives are lines in your program that start with `<samp>#</samp>'. The `<samp>#</samp>' is followed by an identifier that is the <i>directive name</i>. For example, `<samp>#define</samp>' is the directive that defines a macro. Whitespace is also allowed before and after the `<samp>#</samp>'. <p>
+The set of valid directive names is fixed. Programs cannot define new preprocessing directives. <p>
+Some directive names require arguments; these make up the rest of the directive line and must be separated from the directive name by whitespace. For example, `<samp>#define</samp>' must be followed by a macro name and the intended expansion of the macro. See <a href="Simple_Macros.html">Simple Macros</a>. <p>
+A preprocessing directive cannot be more than one line in normal circumstances. It may be split cosmetically with Backslash-Newline, but that has no effect on its meaning. Comments containing Newlines can also divide the directive into multiple lines, but the comments are changed to Spaces before the directive is interpreted. The only way a significant Newline can occur in a preprocessing directive is within a string constant or character constant. Note that most C compilers that might be applied to the output from the preprocessor do not accept string or character constants containing Newlines. <p>
+The `<samp>#</samp>' and the directive name cannot come from a macro expansion. For example, if `<samp>foo</samp>' is defined as a macro expanding to `<samp>define</samp>', that does not make `<samp>#foo</samp>' a valid preprocessing directive. <p>
+<hr>
+Next: <a href="Header_Files.html">Header Files</a>
+Up: <a href="Top.html">Top</a>
+</body></html>

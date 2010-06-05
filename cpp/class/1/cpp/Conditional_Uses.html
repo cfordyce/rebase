@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Conditional Uses</h1>
+Node: <a href="Conditional_Uses.html">Conditional Uses</a>
+Next: <a href="Conditional_Syntax.html">Conditional Syntax</a>
+Up: <a href="Conditionals.html">Conditionals</a>
+<hr>
+<h3>Why Conditionals are Used</h3>
+<p>
+Generally there are three kinds of reason to use a conditional. <p>
+<ul>
+<li><p>
+A program may need to use different code depending on the machine or operating system it is to run on. In some cases the code for one operating system may be erroneous on another operating system; for example, it might refer to library routines that do not exist on the other system. When this happens, it is not enough to avoid executing the invalid code: merely having it in the program makes it impossible to link the program and run it. With a preprocessing conditional, the offending code can be effectively excised from the program when it is not valid. <p>
+<li><p>
+You may want to be able to compile the same source file into two different programs. Sometimes the difference between the programs is that one makes frequent time-consuming consistency checks on its intermediate data, or prints the values of those data for debugging, while the other does not. <p>
+<li><p>
+A conditional whose condition is always false is a good way to exclude code from the program but keep it as a sort of comment for future reference. </ul>
+<p>
+Most simple programs that are intended to run on only one machine will not need to use preprocessing conditionals. <p>
+<hr>
+Next: <a href="Conditional_Syntax.html">Conditional Syntax</a>
+Up: <a href="Conditionals.html">Conditionals</a>
+</body></html>

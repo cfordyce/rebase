@@ -1,0 +1,32 @@
+Documentation for this library can be found at
+<URL:http://www.webthing.com/cgiplusplus/>
+
+For License terms, see the file COPYING.
+
+INSTALLING
+
+There's no automated configuration.  If you want to change the default
+installation, you'll have to edit the Makefile by hand.
+
+The default installation will give you:
+
+/usr/lib/libcgi++.a		(CGI++ library)
+/usr/include/CGI++		(CGI++ header files)
+/usr/lib/libmini-g++.a		(mini-g++ library - see below)
+/usr/include/mini-libg++	(mini-g++ header files - see below)
+
+If you want to build it as a shared library, you're on your own.
+
+A NOTE ABOUT LIBG++
+
+GNU libg++ is no longer supported by the FSF.  With gcc versions up
+to 2.7.x it works fine on all known Unix and Unix-like systems.
+However, problems arise with later gcc/libg++ versions on some systems.
+
+To avoid this, CGI++ now includes a bundled mini-g++ library, comprising
+those parts of libg++ required by CGI++.  By default, CGI++ will install
+and use this in place of libg++.  If you're sure your system has a sane
+and working libg++ installed, you may prefer to remove the mini-g++
+library from the Makefile, and use the real thing instead.  If in doubt,
+use the mini-g++ provided, and make sure you link it explicitly in
+programs using CGI++.

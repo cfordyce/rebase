@@ -1,0 +1,90 @@
+Charles Fordyce
+Assignment 3-2
+
+
+For the new class "FleecemCustomerAccount" (FCA) to properly encapsulate the desired features of the new DB, we have laid out the following description of attributes:
+
+PUBLIC MEMBERS
+       + Constructor
+	 - takes 3 args: Customer First,Last and Middle names, respectively.
+       + Destructor
+         - takes no args, destroys the object.
+
+       + Public Methods
+	 There are "getter" functions for all attributes in private scope.  The getters simply return
+	 the current value held by the variable they address. The getters are intended to be used 
+	 by other classes that need access to customer account data.
+	 Attributes in public scope are those that shall be useful to any other component of our
+	 system; all public methods return const objects:
+		    - getFirstName()
+		    - getLastName()
+		    - getMiddleName()
+		    - getCustomerId()
+		    - getCheckingId()
+		    - getSavingsId()
+		    - getCheckingBalance()
+		    - getSavingsBalance()
+
+       + Private Methods
+         Conversly, each public getter method has a matching private "setter" method. The setters are
+	 necessarily private as the variables they manipulate is very sensitive.  Futhermore, most
+	 customer account data will remain static, thus negating the need for accessor methods. Like
+	 their counterpart public methods, the setters will return const objects:
+		    - setFirstName()
+		    - setLastName()
+		    - setMiddleName()
+		    - setCustomerId()
+		    - setCheckingId()
+		    - setSavingsId()
+		    - setCheckingBalance()
+		    - setSavingsBalance()
+	
+	+ Private Class Variables
+	  The class provides the following variables for use in the class; getters and 
+	  setters are provided for public and private access:
+		  + Customer Name
+		  	  - string first_name
+			  - string last name
+			  - string middle_name
+
+	          + Account Numbers
+		            - long int customer_id
+			    - long int checking_id
+			    - long int savings_id
+			    
+                  + Account Balances
+			    - double checking_balance
+			    - double savings_balance
+
+
+And now the representation as a C++ class:
+
+class FleecemCustomerAccount {
+
+public:
+	FleecemCustomerAccount(string, string, string);
+	~FleecemCustomerAccount();
+
+	const string getFirstName();
+	const string getLastName();
+	const string getMiddleName();
+	const long int getCustomerId();
+	const long int getCheckingId();
+	const long int getSavingsId();
+	const double getCheckingBalance();
+	const double getSavingsBalance();
+
+private:
+	string first_name,last_name,middle_name;
+	long int customer_id,checking_id,savings_id;
+	double checking_balance,savings_balance;
+
+	const string setFirstName(string);
+	const string setLastName(string);
+	const string setMiddleName(string);
+	const long int setCustomerId(long int);
+	const long int setCheckingId(long int);
+	const long int setSavingsId(long int);
+	const double setCheckingBalance(double);
+	const double setSavingsBalance(double);
+}

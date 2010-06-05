@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Combining Sources</h1>
+Node: <a href="Combining_Sources.html">Combining Sources</a>
+Next: <a href="Other_Directives.html">Other Directives</a>
+Prev: <a href="Conditionals.html">Conditionals</a>
+Up: <a href="Top.html">Top</a>
+<hr>
+<h3>Combining Source Files</h3>
+<p>
+One of the jobs of the C preprocessor is to inform the C compiler of where each line of C code came from: which source file and which line number. <p>
+C code can come from multiple source files if you use `<samp>#include</samp>'; both `<samp>#include</samp>' and the use of conditionals and macros can cause the line number of a line in the preprocessor output to be different from the line's number in the original source file. You will appreciate the value of making both the C compiler (in error messages) and symbolic debuggers such as GDB use the line numbers in your source file. <p>
+The C preprocessor builds on this feature by offering a directive by which you can control the feature explicitly. This is useful when a file for input to the C preprocessor is the output from another program such as the <code>bison</code>  parser generator, which operates on another file that is the true source file. Parts of the output from <code>bison</code>  are generated from scratch, other parts come from a standard parser file. The rest are copied nearly verbatim from the source file, but their line numbers in the <code>bison</code>  output are not the same as their original line numbers. Naturally you would like compiler error messages and symbolic debuggers to know the original source file and line number of each line in the <code>bison</code>  input. <p>
+<code>bison</code>  arranges this by writing `<samp>#line</samp>' directives into the output file. `<samp>#line</samp>' is a directive that specifies the original line number and source file name for subsequent input in the current preprocessor input file. `<samp>#line</samp>' has three variants: <p>
+<dl>
+<dt>
+<code>#line <i>linenum</i></code> <dd>
+Here <i>linenum</i> is a decimal integer constant. This specifies that the line number of the following line of input, in its original source file, was <i>linenum</i>. <p>
+<dt>
+<code>#line <i>linenum</i> <i>filename</i></code> <dd>
+Here <i>linenum</i> is a decimal integer constant and <i>filename</i> is a string constant. This specifies that the following line of input came originally from source file <i>filename</i> and its line number there was <i>linenum</i>. Keep in mind that <i>filename</i> is not just a file name; it is surrounded by doublequote characters so that it looks like a string constant. <p>
+<dt>
+<code>#line <i>anything else</i></code> <dd>
+<i>anything else</i> is checked for macro calls, which are expanded. The result should be a decimal integer constant followed optionally by a string constant, as described above. </dl>
+<p>
+`<samp>#line</samp>' directives alter the results of the `<samp>__FILE__</samp>' and `<samp>__LINE__</samp>' predefined macros from that point on. See <a href="Standard_Predefined.html">Standard Predefined</a>. <p>
+The output of the preprocessor (which is the input for the rest of the compiler) contains directives that look much like `<samp>#line</samp>' directives. They start with just `<samp>#</samp>' instead of `<samp>#line</samp>', but this is followed by a line number and file name as in `<samp>#line</samp>'. See <a href="Output.html">Output</a>. <p>
+<hr>
+Next: <a href="Other_Directives.html">Other Directives</a>
+Up: <a href="Top.html">Top</a>
+</body></html>

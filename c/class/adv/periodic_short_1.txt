@@ -1,0 +1,4 @@
+#  Atomic  Atomic   Atomic   Atomic
+#  Number  Weight   Symbol   Name
+#--------+--------+--------+--------
+ 1      1.0080     H     Hydrogen

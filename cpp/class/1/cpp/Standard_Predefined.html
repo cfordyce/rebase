@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Standard Predefined</h1>
+Node: <a href="Standard_Predefined.html">Standard Predefined</a>
+Next: <a href="Nonstandard_Predefined.html">Nonstandard Predefined</a>
+Prev: <a href="Predefined.html">Predefined</a>
+Up: <a href="Predefined.html">Predefined</a>
+<hr>
+<h4>Standard Predefined Macros</h4>
+<p>
+The standard predefined macros are available with the same meanings regardless of the machine or operating system on which you are using GNU C. Their names all start and end with double underscores. Those preceding <code>__GNUC__</code>  in this table are standardized by ANSI C; the rest are GNU C extensions. <p>
+<dl>
+<dt>
+<code>__FILE__</code> <dd>
+This macro expands to the name of the current input file, in the form of a C string constant. The precise name returned is the one that was specified in `<samp>#include</samp>' or as the input file name argument. <p>
+<dt>
+<code>__LINE__</code> <dd>
+This macro expands to the current input line number, in the form of a decimal integer constant. While we call it a predefined macro, it's a pretty strange macro, since its ``definition'' changes with each new line of source code. <p>
+This and `<samp>__FILE__</samp>' are useful in generating an error message to report an inconsistency detected by the program; the message can state the source line at which the inconsistency was detected. For example, <p>
+<pre>
+	fprintf (stderr, "Internal error: "
+	                 "negative string length "
+	                 "%d at %s, line %d.",
+	         length, __FILE__, __LINE__);
+</pre>
+<p>
+A `<samp>#include</samp>' directive changes the expansions of `<samp>__FILE__</samp>' and `<samp>__LINE__</samp>' to correspond to the included file. At the end of that file, when processing resumes on the input file that contained the `<samp>#include</samp>' directive, the expansions of `<samp>__FILE__</samp>' and `<samp>__LINE__</samp>' revert to the values they had before the `<samp>#include</samp>' (but `<samp>__LINE__</samp>' is then incremented by one as processing moves to the line after the `<samp>#include</samp>'). <p>
+The expansions of both `<samp>__FILE__</samp>' and `<samp>__LINE__</samp>' are altered if a `<samp>#line</samp>' directive is used. See <a href="Combining_Sources.html">Combining Sources</a>. <p>
+<dt>
+<code>__DATE__</code> <dd>
+This macro expands to a string constant that describes the date on which the preprocessor is being run. The string constant contains eleven characters and looks like `<samp>"Jan 29 1987"</samp>' or `<samp>"Apr 1 1905"</samp>'. <p>
+<dt>
+<code>__TIME__</code> <dd>
+This macro expands to a string constant that describes the time at which the preprocessor is being run. The string constant contains eight characters and looks like `<samp>"23:59:01"</samp>'. <p>
+<dt>
+<code>__STDC__</code> <dd>
+This macro expands to the constant 1, to signify that this is ANSI Standard C. (Whether that is actually true depends on what C compiler will operate on the output from the preprocessor.) <p>
+<dt>
+<code>__STDC_VERSION__</code> <dd>
+This macro expands to the C Standard's version number, a long integer constant of the form `<samp><i>yyyy</i><i>mm</i>L</samp>' where <i>yyyy</i> and <i>mm</i> are the year and month of the Standard version. This signifies which version of the C Standard the preprocessor conforms to. Like `<samp>__STDC__</samp>', whether this version number is accurate for the entire implementation depends on what C compiler will operate on the output from the preprocessor. <p>
+<dt>
+<code>__GNUC__</code> <dd>
+This macro is defined if and only if this is GNU C. This macro is defined only when the entire GNU C compiler is in use; if you invoke the preprocessor directly, `<samp>__GNUC__</samp>' is undefined. The value identifies the major version number of GNU CC (`<samp>1</samp>' for GNU CC version 1, which is now obsolete, and `<samp>2</samp>' for version 2). <p>
+<dt>
+<code>__GNUC_MINOR__</code> <dd>
+The macro contains the minor version number of the compiler. This can be used to work around differences between different releases of the compiler (for example, if gcc 2.6.3 is known to support a feature, you can test for <code>__GNUC__ &gt; 2 || (__GNUC__ == 2 &amp;&amp; __GNUC_MINOR__ &gt;= 6)</code> ). The last number, `<samp>3</samp>' in the example above, denotes the bugfix level of the compiler; no macro contains this value. <p>
+<dt>
+<code>__GNUG__</code> <dd>
+The GNU C compiler defines this when the compilation language is C++; use `<samp>__GNUG__</samp>' to distinguish between GNU C and GNU C++. <p>
+<dt>
+<code>__cplusplus</code> <dd>
+The draft ANSI standard for C++ used to require predefining this variable. Though it is no longer required, GNU C++ continues to define it, as do other popular C++ compilers. You can use `<samp>__cplusplus</samp>' to test whether a header is compiled by a C compiler or a C++ compiler. <p>
+<dt>
+<code>__STRICT_ANSI__</code> <dd>
+This macro is defined if and only if the `<samp>-ansi</samp>' switch was specified when GNU C was invoked. Its definition is the null string. This macro exists primarily to direct certain GNU header files not to define certain traditional Unix constructs which are incompatible with ANSI C. <p>
+<dt>
+<code>__BASE_FILE__</code> <dd>
+This macro expands to the name of the main input file, in the form of a C string constant. This is the source file that was specified as an argument when the C compiler was invoked. <p>
+<dt>
+<code>__INCLUDE_LEVEL__</code> <dd>
+This macro expands to a decimal integer constant that represents the depth of nesting in include files. The value of this macro is incremented on every `<samp>#include</samp>' directive and decremented at every end of file. For input files specified by command line arguments, the nesting level is zero. <p>
+<dt>
+<code>__VERSION__</code> <dd>
+This macro expands to a string which describes the version number of GNU C. The string is normally a sequence of decimal numbers separated by periods, such as `<samp>"2.6.0"</samp>'. The only reasonable use of this macro is to incorporate it into a string constant. <p>
+<dt>
+<code>__OPTIMIZE__</code> <dd>
+This macro is defined in optimizing compilations. It causes certain GNU header files to define alternative macro definitions for some system library functions. It is unwise to refer to or test the definition of this macro unless you make very sure that programs will execute with the same effect regardless. <p>
+<dt>
+<code>__CHAR_UNSIGNED__</code> <dd>
+This macro is defined if and only if the data type <code>char</code>  is unsigned on the target machine. It exists to cause the standard header file `<tt>limit.h</tt>' to work correctly. It is bad practice to refer to this macro yourself; instead, refer to the standard macros defined in `<tt>limit.h</tt>'. The preprocessor uses this macro to determine whether or not to sign-extend large character constants written in octal; see  <a href="#if_Directive.html">The `<samp>#if</samp>' Directive</a>. <p>
+<dt>
+<code>__REGISTER_PREFIX__</code> <dd>
+This macro expands to a string describing the prefix applied to cpu registers in assembler code. It can be used to write assembler code that is usable in multiple environments. For example, in the `<samp>m68k-aout</samp>' environment it expands to the string `<samp>""</samp>', but in the `<samp>m68k-coff</samp>' environment it expands to the string `<samp>"%"</samp>'. <p>
+<dt>
+<code>__USER_LABEL_PREFIX__</code> <dd>
+This macro expands to a string describing the prefix applied to user generated labels in assembler code. It can be used to write assembler code that is usable in multiple environments. For example, in the `<samp>m68k-aout</samp>' environment it expands to the string `<samp>"_"</samp>', but in the `<samp>m68k-coff</samp>' environment it expands to the string `<samp>""</samp>'. </dl>
+<p>
+<hr>
+Next: <a href="Nonstandard_Predefined.html">Nonstandard Predefined</a>
+Up: <a href="Predefined.html">Predefined</a>
+</body></html>

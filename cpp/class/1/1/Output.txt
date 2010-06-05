@@ -1,0 +1,143 @@
+//----------------------------------------------------------- 
+// Module Name: 
+//    Homework 1, Problem 1
+// 
+// Description: 
+//    Using the cout object, write a program that displays a 
+//    single character, a string, and an integer.
+// 
+// Author: 
+//    Bruce M. Reynolds 
+//-----------------------------------------------------------  
+A
+Hello, World
+125
+3.14159
+
+//----------------------------------------------------------- 
+// Module Name: 
+//    Homework 1, Problem 2
+// 
+// Description: 
+//    Define a constant double variable dPI = 3.14159265359. 
+//    Using the iomanip facilities of the cout object, display 
+//    the value of dPI in the following ways: "3.1416", 
+//    "0003.14159", "3.14159e+001", and "3.1415926".
+// 
+// Author: 
+//    Bruce M. Reynolds 
+//-----------------------------------------------------------  
+3.1416
+003.14159
+3.14159e+000
+3.1415927
+
+//----------------------------------------------------------- 
+// Module Name: 
+//    Homework 1, Problem 3
+// 
+// Description: 
+//    Write a program that prompts the user for a base 10 
+//    integer and a base, then displays the number in the 
+//    requested base. Assume the set of bases is "dec", "oct", 
+//    and "hex". The program will continue to accept input 
+//    from the user until she signals from the keyboard that 
+//    she is done. 
+// 
+// Author: 
+//    Bruce M. Reynolds 
+//-----------------------------------------------------------  
+Input a number (-1 to quit) and a base [oct|dec|hex]: 10 hex
+                                              Result: a
+Input a number (-1 to quit) and a base [oct|dec|hex]: 1234 oct
+                                              Result: 2322
+Input a number (-1 to quit) and a base [oct|dec|hex]: 22 dec
+                                              Result: 22
+Input a number (-1 to quit) and a base [oct|dec|hex]: -1
+
+//----------------------------------------------------------- 
+// Module Name: 
+//    Homework 1, Problem 4
+// 
+// Description: 
+//    Using the pass by reference operator, write a program 
+//    that includes a function to prompt a user to enter a dollar 
+//    amount representing the amount of a bank check, and returns 
+//    the information as a parameter of the function.
+// 
+// Author: 
+//    Bruce M. Reynolds 
+//-----------------------------------------------------------  
+Enter the dollar amount of the check: 100.10
+The check amount entered was: 100.0999985
+
+//----------------------------------------------------------- 
+// Module Name: 
+//    Homework 1, Problem 5
+// 
+// Description: 
+//    Create a class to hold and print out a date. Include a 
+//    constructor that initializes the object with a month, day, 
+//    and year. Store the month, day and year as separate private 
+//    members. Include a public method that prints the date to cout 
+//    in the format mm/dd/yyyy.
+//
+//    Create a program to read in several dates. For each date, 
+//    use new to create a date object on the heap, print the object's 
+//    date to cout, and delete the object. You do not have to check 
+//    if the dates are valid.
+// 
+// Author: 
+//    Bruce M. Reynolds 
+//-----------------------------------------------------------  
+Enter dates (-1 to quit):
+1/1/1
+01/01/0001
+11/22/1933
+11/22/1933
+1/1/2001
+01/01/2001
+-1
+
+//----------------------------------------------------------- 
+// Module Name: 
+//    Homework 1, Problem 6
+// 
+// Description: 
+//    Write a program that counts the lines of code in a source 
+//    code file. Do not count blank lines and C++-style comment 
+//    lines (where the first non-blank characters are "//"). 
+//    Read the file from the standard input stream using the cin 
+//    object (or use fstream). Report the number of lines to the 
+//    standard output stream using the cout object.
+//    
+// Author: 
+//    Bruce M. Reynolds 
+//-----------------------------------------------------------  
+1:  #include <iostream>
+2:  #include <fstream>
+3:  using namespace std;
+3:
+4:  #include "Homework1.h"
+4:
+4:  //-----------------------------------------------------------
+4:  //  int main( int argc, char **argv )
+4:  //
+4:  //  Purpose: To test the line counting algorithm
+4:  //-----------------------------------------------------------
+5:  int main( int argc, char **argv )
+6:  {
+7:      Func1_6( argc, argv );
+7:
+7:      // a comment after whitespace. next is a comment at the end
+7:      // of the line, and one in column 1 at the end of the line
+7:      // try both spaces and tabs as whitespace
+7:      //
+7:      //
+7:  //
+7:      //// a comment with extra // characters
+7:
+8:      return 0;               // an end-line comment
+9:  }
+9:
+Number of lines is 9

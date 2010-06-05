@@ -1,0 +1,39 @@
+#  Atomic  Atomic   Atomic   Atomic
+#  Number  Weight   Symbol   Name
+#--------+--------+--------+--------
+1          1.00797            H            Hydrogen  
+2          4.0026            He            Helium
+3          6.939             Li            Lithium
+4          9.0122            Be            Beryllium
+# some leading and trailing spaces should be OK 
+   1          1.00797            H            Hydrogen  
+2          4.0026            He            Helium     
+     3          6.939             Li            Lithium  
+ 4          9.0122            Be            Beryllium 
+# some fields that are too long 
+4          9.0122            BeNOTTHIS     Beryllium
+4          9.0122            Be            Beryllium^xxxxxxxxxxxxxxxxxxxxxxxxxxxxx^NOTTHIS
+# bad number fields 
+x          1.00797      H            Hydrogen
+1          H            1.00797      Hydrogen
+
+# missing leading fields 
+1.00797    H            Hydrogen
+He         Helium
+Lithium
+
+# missing non-leading fields 
+1          H                 Hydrogen
+2          4.0026            Helium
+3          6.939             Li
+4          Beryllium
+
+# extra fields 
+4          9.0122            Be            Beryllium extra stuff
+
+# totally wacked 
+@#$%^&*()(*&^T%$@#$%^&*((*&^%
+\n
+\0
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+11.00797HHydrogen

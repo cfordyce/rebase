@@ -1,0 +1,5 @@
+FILE QUARANTINED
+----------------
+
+The original contents of cpp-1.tgz->Unknown->cpp1/2/solution/Homework2_20Solutions.zip have been replaced with
+this message because of its EncryptedCompressedFile characteristics.

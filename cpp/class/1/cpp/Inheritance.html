@@ -1,0 +1,24 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Inheritance</h1>
+Node: <a href="Inheritance.html">Inheritance</a>
+Prev: <a href="Once-Only.html">Once-Only</a>
+Up: <a href="Header_Files.html">Header Files</a>
+<hr>
+<h3>Inheritance and Header Files</h3>
+<p>
+<i>Inheritance</i> is what happens when one object or file derives some of its contents by virtual copying from another object or file. In the case of C header files, inheritance means that one header file includes another header file and then replaces or adds something. <p>
+If the inheriting header file and the base header file have different names, then inheritance is straightforward: simply write `<samp>#include "<i>base</i>"</samp>' in the inheriting file. <p>
+Sometimes it is necessary to give the inheriting file the same name as the base file. This is less straightforward. <p>
+For example, suppose an application program uses the system header file `<tt>sys/signal.h</tt>', but the version of `<tt>/usr/include/sys/signal.h</tt>' on a particular system doesn't do what the application program expects. It might be convenient to define a ``local'' version, perhaps under the name `<tt>/usr/local/include/sys/signal.h</tt>', to override or add to the one supplied by the system. <p>
+You can do this by using the option `<samp>-I.</samp>' for compilation, and writing a file `<tt>sys/signal.h</tt>' that does what the application program expects. But making this file include the standard `<tt>sys/signal.h</tt>' is not so easy---writing `<samp>#include &lt;sys/signal.h&gt;</samp>' in that file doesn't work, because it includes your own version of the file, not the standard system version. Used in that file itself, this leads to an infinite recursion and a fatal error in compilation. <p>
+`<samp>#include &lt;/usr/include/sys/signal.h&gt;</samp>' would find the proper file, but that is not clean, since it makes an assumption about where the system header file is found. This is bad for maintenance, since it means that any change in where the system's header files are kept requires a change somewhere else. <p>
+The clean way to solve this problem is to use `<samp>#include_next</samp>', which means, ``Include the <em>next</em> file with this name.'' This directive works like `<samp>#include</samp>' except in searching for the specified file: it starts searching the list of header file directories <em>after</em> the directory in which the current file was found. <p>
+Suppose you specify `<samp>-I /usr/local/include</samp>', and the list of directories to search also includes `<tt>/usr/include</tt>'; and suppose that both directories contain a file named `<tt>sys/signal.h</tt>'. Ordinary `<samp>#include &lt;sys/signal.h&gt;</samp>' finds the file under `<tt>/usr/local/include</tt>'. If that file contains `<samp>#include_next &lt;sys/signal.h&gt;</samp>', it starts searching after that directory, and finds the file in `<tt>/usr/include</tt>'. <p>
+<hr>
+Up: <a href="Header_Files.html">Header Files</a>
+</body></html>

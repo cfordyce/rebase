@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Output</h1>
+Node: <a href="Output.html">Output</a>
+Next: <a href="Invocation.html">Invocation</a>
+Prev: <a href="Other_Directives.html">Other Directives</a>
+Up: <a href="Top.html">Top</a>
+<hr>
+<h3>C Preprocessor Output</h3>
+<p>
+The output from the C preprocessor looks much like the input, except that all preprocessing directive lines have been replaced with blank lines and all comments with spaces. Whitespace within a line is not altered; however, a space is inserted after the expansions of most macro calls. <p>
+Source file name and line number information is conveyed by lines of the form <p>
+<pre>
+	# <i>linenum</i> <i>filename</i> <i>flags</i>
+</pre>
+<p>
+which are inserted as needed into the middle of the input (but never within a string or character constant). Such a line means that the following line originated in file <i>filename</i> at line <i>linenum</i>. <p>
+After the file name comes zero or more flags, which are `<samp>1</samp>', `<samp>2</samp>' or `<samp>3</samp>'. If there are multiple flags, spaces separate them. Here is what the flags mean: <p>
+<dl>
+<dt>
+`<samp>1</samp>'<dd>
+This indicates the start of a new file. <dt>
+`<samp>2</samp>'<dd>
+This indicates returning to a file (after having included another file). <dt>
+`<samp>3</samp>'<dd>
+This indicates that the following text comes from a system header file, so certain warnings should be suppressed. </dl>
+<p>
+<hr>
+Next: <a href="Invocation.html">Invocation</a>
+Up: <a href="Top.html">Top</a>
+</body></html>

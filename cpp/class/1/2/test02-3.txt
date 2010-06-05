@@ -1,0 +1,30 @@
+//   1	/*----------------------------------------
+     2	  Charles Fordyce
+     	
+     4	  Assingment 1-2
+//   5	  ----------------------------------------*/
+     
+     7	#include <iostream>
+     8	#include <iomanip>
+     9	
+    10	int
+    11	main()
+    12	{
+    13	  const float dPI = 3.14159265359;
+    14  	  
+    15	  // print "3.1416"
+    16	  cout << setprecision(5) << dPI << endl;
+    17	
+    18	  // print "0003.14159"
+    19	  cout << setw(10) << setfill('0') << setprecision(6) << dPI << endl;
+    20	  
+    21	  // print "3.14159e+000"
+    22	  cout << setiosflags(ios::scientific) << dPI << endl;
+    23	  
+    24	
+    25	  // How do you stop implicit rounding of numeric literals??
+    26	  // print "3.1415926"  
+    27	  cout << setiosflags(ios::fixed) << setprecision(8) << dPI << endl;
+    28	  
+    29	  return 0;
+    30	}

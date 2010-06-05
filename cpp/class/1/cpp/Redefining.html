@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Redefining</h1>
+Node: <a href="Redefining.html">Redefining</a>
+Next: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+Prev: <a href="Undefining.html">Undefining</a>
+Up: <a href="Macros.html">Macros</a>
+<hr>
+<h3>Redefining Macros</h3>
+<p>
+<i>Redefining</i> a macro means defining (with `<samp>#define</samp>') a name that is already defined as a macro. <p>
+A redefinition is trivial if the new definition is transparently identical to the old one. You probably wouldn't deliberately write a trivial redefinition, but they can happen automatically when a header file is included more than once (see <a href="Header_Files.html">Header Files</a>), so they are accepted silently and without effect. <p>
+Nontrivial redefinition is considered likely to be an error, so it provokes a warning message from the preprocessor. However, sometimes it is useful to change the definition of a macro in mid-compilation. You can inhibit the warning by undefining the macro with `<samp>#undef</samp>' before the second definition. <p>
+In order for a redefinition to be trivial, the new definition must exactly match the one already in effect, with two possible exceptions: <p>
+<ul>
+<li><p>
+Whitespace may be added or deleted at the beginning or the end. <p>
+<li><p>
+Whitespace may be changed in the middle (but not inside strings). However, it may not be eliminated entirely, and it may not be added where there was no whitespace at all. </ul>
+<p>
+Recall that a comment counts as whitespace. <p>
+<hr>
+Next: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+Up: <a href="Macros.html">Macros</a>
+</body></html>

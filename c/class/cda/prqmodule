@@ -1,0 +1,362 @@
+/*----------------------------------------------------------------------------
+ *
+ * File: prq.c
+ *
+ * Description: Source file for PRQ Module - Project 4
+ *
+ * Revision History
+ * Date         Programmer Name     Description
+ * -----------  ------------------  ----------------
+ * 24-Feb-2001  Charles Fordyce     1.0
+ *---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------
+ * includes
+ *---------------------------------------------------------------------------*/
+#include <stdlib.h>
+#include <enq.h>
+#include <cda.h>
+#include <prqp.h>
+
+/*----------------------------------------------------------------------------
+ * Method Definitions
+ *---------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------
+ * Method: PRQ_create_queue()
+ *---------------------------------------------------------------------------*/
+PRQ_ID_t PRQ_create_queue( const char *name, CDA_UINT32_t max_priority ) 
+{ 
+  int inx = 0;
+  PRQ__CONTROL_p_t queue = CDA_NEW( PRQ__CONTROL_t );
+  queue->anchor_array = CDA_calloc(max_priority+1, sizeof(ENQ_ANCHOR_p_t));
+  
+  for ( ; inx <= max_priority; ++inx )
+    queue->anchor_array[inx] = ENQ_create_list( NULL ); 
+  
+  queue->max_priority = max_priority;
+  
+  return queue;
+} 
+
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_create_item
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_create_item( void *data, CDA_UINT32_t priority ) 
+{ 
+  PRQ_ITEM_p_t item = NULL; 
+  
+  item = (PRQ_ITEM_p_t)ENQ_create_item( NULL, sizeof(PRQ_ITEM_t) );
+  
+  item->data = data; 
+  item->priority = priority;
+
+  return item; 
+} 
+
+
+/*----------------------------------------------------------------------------
+ * Method:  PRQ_add_item
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_add_item( PRQ_ID_t queue, PRQ_ITEM_p_t item ) 
+{ 
+  if ( item->priority > queue->max_priority || item->priority < 0 ) 
+    abort(); 
+  
+  ENQ_add_tail( (ENQ_ANCHOR_p_t)queue->anchor_array[item->priority] , (ENQ_ITEM_p_t)item );
+  
+  return item; 
+} 
+
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_remove_item
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_remove_item( PRQ_ID_t queue ) 
+{ 
+  int inx = queue->max_priority;
+  PRQ_ITEM_p_t item = NULL;
+  
+  while (item == NULL && inx >= 0 )
+    {
+      item = (PRQ_ITEM_p_t)ENQ_deq_head( (ENQ_ANCHOR_p_t)queue->anchor_array[inx] ); 
+      
+      if ( (ENQ_ANCHOR_p_t)item == queue->anchor_array[inx--] ) 
+	item = NULL; 
+    }
+  
+  return item; 
+} 
+
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_deq_item
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_deq_item( PRQ_ITEM_p_t item )
+{
+  ENQ_deq_item( (ENQ_ITEM_p_t)item );
+  
+  return item;
+}
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_enq_pri_head
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_enq_pri_head( PRQ_ID_t queue, PRQ_ITEM_p_t item )
+{
+  if ( item->priority > queue->max_priority || item->priority < 0 ) 
+    abort(); 
+  
+  ENQ_add_head( (ENQ_ANCHOR_p_t)queue->anchor_array[item->priority] , (ENQ_ITEM_p_t)item );
+  
+  return item; 
+}
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_deq_pri_head
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_deq_pri_head( PRQ_ID_t queue, CDA_UINT32_t priority )
+{
+  PRQ_ITEM_p_t item = NULL;
+
+  if ( priority > queue->max_priority || priority < 0 ) 
+    abort(); 
+  
+  item = ( PRQ_ITEM_p_t)ENQ_deq_head( (ENQ_ANCHOR_p_t)queue->anchor_array[priority] );
+  
+  return item;
+}
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_destroy_item
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_destroy_item( PRQ_ITEM_p_t item ) 
+{ 
+  ENQ_destroy_item( (ENQ_ITEM_p_t)item ); 
+  
+  return NULL;
+} 
+
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_is_queue_empty
+ *---------------------------------------------------------------------------*/
+CDA_BOOL_t PRQ_is_queue_empty( PRQ_ID_t queue ) 
+{ 
+  int inx = queue->max_priority;
+  CDA_BOOL_t rcode = CDA_FALSE;
+  
+  while (rcode != CDA_FALSE && inx >= 0 )
+    rcode = ENQ_is_list_empty( (ENQ_ANCHOR_p_t)queue->anchor_array[inx--] ); 
+  
+  return rcode; 
+} 
+
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_empty_queue
+ *---------------------------------------------------------------------------*/
+PRQ_ID_t PRQ_empty_queue( PRQ_ID_t queue, PRQ_DESTROY_PROC_p_t destroy_proc ) 
+{ 
+  int inx = queue->max_priority;
+  PRQ_ITEM_p_t item = NULL;
+  
+  for ( ; inx >= 0; --inx )
+    while ( ! ENQ_is_list_empty( (ENQ_ANCHOR_p_t)queue->anchor_array[inx] ) ) 
+      {
+	item = (PRQ_ITEM_p_t)ENQ_deq_head( (ENQ_ANCHOR_p_t)queue->anchor_array[inx] );
+	
+	if ( destroy_proc != NULL ) 
+	  destroy_proc( item->data ); 
+	
+	PRQ_destroy_item( item );
+      }
+  
+  return queue; 
+}
+
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_destroy_queue
+ *---------------------------------------------------------------------------*/
+PRQ_ID_t PRQ_destroy_queue( PRQ_ID_t queue, PRQ_DESTROY_PROC_p_t destroy_proc ) 
+{ 
+  int inx = queue->max_priority;
+  
+  PRQ_empty_queue( queue, destroy_proc ); 
+  
+  for ( ; inx >= 0; --inx )
+    ENQ_destroy_list( (ENQ_ANCHOR_p_t)queue->anchor_array[inx] ); 
+  
+  CDA_free( queue->anchor_array );
+  CDA_free( queue ); 
+  
+  return PRQ_NULL_ID; 
+  
+} 
+/*-----------------------------------------------------------------------------
+ *
+ * File: prq.h
+ *
+ * Description: Public Header for PRQ Module - Project 4
+ *
+ * Revision History
+ * Date         Programmer Name     Description
+ * -----------  ------------------  ----------------
+ * 24-Feb-2001  Charles Fordyce        1.0
+ *----------------------------------------------------------------------------*/
+#ifndef PRQ_H
+#define PRQ_H
+
+/*-----------------------------------------------------------------------------
+ * Required Includes
+ *----------------------------------------------------------------------------*/
+#include <stddef.h>
+#include <stdlib.h>
+#include <cda.h>
+#include <enq.h>
+
+/*-----------------------------------------------------------------------------
+ * Macros
+ *----------------------------------------------------------------------------*/
+#define PRQ_NULL_ID ( NULL ) 
+
+#define PRQ_GET_DATA( item ) ( item->data )
+
+#define PRQ_GET_PRIORITY( item ) ( item->priority ) 
+
+/*-----------------------------------------------------------------------------
+ * Typedef Equivalencies
+ *----------------------------------------------------------------------------*/
+typedef void PRQ_DESTROY_PROC_t( void *data ); 
+typedef PRQ_DESTROY_PROC_t *PRQ_DESTROY_PROC_p_t; 
+
+typedef struct prq__control_s *PRQ_ID_t; 
+
+typedef struct prq_item_s 
+{ 
+  ENQ_ITEM_t     enq_item; 
+  void           *data; 
+  CDA_UINT32_t   priority; 
+} PRQ_ITEM_t, *PRQ_ITEM_p_t; 
+
+/*-----------------------------------------------------------------------------
+ * External Variables
+ *----------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------
+ * Method Prototypes
+ *----------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------
+ * Method: PRQ_create_queue
+ * Description: Creates a priority queue
+ *----------------------------------------------------------------------------*/
+PRQ_ID_t PRQ_create_queue( const char *, CDA_UINT32_t );
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_create_item
+ * Description:This method will create an item that is a subclass of ENQ_ITEM_t, and that can be added 
+ * to a priority queue. The item is created in an unenqueued state. 
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_create_item( void *value, CDA_UINT32_t priority ); 
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_is_queue_empty
+ * Description: This method will determine whether a priority queue is empty. 
+ *---------------------------------------------------------------------------*/
+CDA_BOOL_t PRQ_is_queue_empty( PRQ_ID_t queue );
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_add_item
+ * Description: This method will add an item to a priority queue. 
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_add_item( PRQ_ID_t queue, PRQ_ITEM_p_t item ); 
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_remove_item
+ * Description: This method removes and returns the highest priority item from a priority queue. 
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_remove_item( PRQ_ID_t queue ); 
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_deq_item
+ * Description: Dequeues an item and returns it.
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_deq_item( PRQ_ITEM_p_t );
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_enq_pri_head
+ * Description: Enqueues an item at the head of its priority class in queue, returns itself.
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_enq_pri_head( PRQ_ID_t, PRQ_ITEM_p_t );
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_deq_pri_head
+ * Description: Dequeues and returns the item at the head of a priority class.
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_deq_pri_head( PRQ_ID_t, CDA_UINT32_t );
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_destroy_item
+ * Description: This method will destroy a priority queue item. 
+ *---------------------------------------------------------------------------*/
+PRQ_ITEM_p_t PRQ_destroy_item( PRQ_ITEM_p_t item ); 
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_empty_queue
+ * Description: This method will remove and destroy all items in a priority queue. The caller may 
+ * optionally pass the address of a procedure to call prior to destroying the item; if specified, 
+ * the value of each destroyed item will be passed to this procedure. 
+ *---------------------------------------------------------------------------*/
+PRQ_ID_t PRQ_empty_queue( PRQ_ID_t queue, PRQ_DESTROY_PROC_p_t destroy_proc ); 
+
+/*----------------------------------------------------------------------------
+ * Method: PRQ_destroy_queue
+ * Description: This method will destroy all items in a priority queue, and then destroy the queue. The 
+ * caller may optionally pass the address of a procedure to call prior to destroying each item 
+ * in the queue; if specified, the value of each destroyed item will be passed to this 
+ * procedure. 
+ *---------------------------------------------------------------------------*/
+PRQ_ID_t PRQ_destroy_queue( PRQ_ID_t queue, PRQ_DESTROY_PROC_p_t destroy_proc ); 
+
+
+#endif /* PRQ_H */
+
+/*-----------------------------------------------------------------------------
+ *
+ * File: prqp.h
+ *
+ * Description: Private Header for PRQ Module - Project 4
+ *
+ * Revision History
+ * Date         Programmer Name     Description
+ * -----------  ------------------  ----------------
+ * 24-Feb-2001  Charles Fordyce        1.0    
+ *-----------------------------------------------------------------------------*/
+
+#ifndef PRQP_H
+#define PRQP_H
+
+/*------------------------------------------------------------------------------
+ * Required Includes
+ *-----------------------------------------------------------------------------*/
+#include <prq.h>
+#include <stddef.h>
+
+/*------------------------------------------------------------------------------
+ * Macros
+ *-----------------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------------------
+ * Typedef Equivalencies
+ *-----------------------------------------------------------------------------*/
+typedef struct  prq__control_s
+{
+  ENQ_ANCHOR_p_t *anchor_array; 
+  CDA_UINT32_t    max_priority;
+}PRQ__CONTROL_t, *PRQ__CONTROL_p_t;
+
+
+/*------------------------------------------------------------------------------
+ * Private Prototypes
+ *-----------------------------------------------------------------------------*/
+
+#endif

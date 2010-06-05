@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Cascaded Macros</h1>
+Node: <a href="Cascaded_Macros.html">Cascaded Macros</a>
+Next: <a href="Newlines_in_Args.html">Newlines in Args</a>
+Prev: <a href="Argument_Prescan.html">Argument Prescan</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+<hr>
+<h4>Cascaded Use of Macros</h4>
+<p>
+A <i>cascade</i> of macros is when one macro's body contains a reference to another macro. This is very common practice. For example, <p>
+<pre>
+	#define BUFSIZE 1020
+	#define TABLESIZE BUFSIZE
+</pre>
+<p>
+This is not at all the same as defining `<samp>TABLESIZE</samp>' to be `<samp>1020</samp>'. The `<samp>#define</samp>' for `<samp>TABLESIZE</samp>' uses exactly the body you specify---in this case, `<samp>BUFSIZE</samp>'---and does not check to see whether it too is the name of a macro. <p>
+It's only when you <em>use</em> `<samp>TABLESIZE</samp>' that the result of its expansion is checked for more macro names. <p>
+This makes a difference if you change the definition of `<samp>BUFSIZE</samp>' at some point in the source file. `<samp>TABLESIZE</samp>', defined as shown, will always expand using the definition of `<samp>BUFSIZE</samp>' that is currently in effect: <p>
+<pre>
+	#define BUFSIZE 1020
+	#define TABLESIZE BUFSIZE
+	#undef BUFSIZE
+	#define BUFSIZE 37
+</pre>
+<p>
+Now `<samp>TABLESIZE</samp>' expands (in two stages) to `<samp>37</samp>'. (The `<samp>#undef</samp>' is to prevent any warning about the nontrivial redefinition of <code>BUFSIZE</code> .) <p>
+<hr>
+Next: <a href="Newlines_in_Args.html">Newlines in Args</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+</body></html>

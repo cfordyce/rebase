@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - #if Directive</h1>
+Node: <a href="#if_Directive.html">#if Directive</a>
+Next: <a href="#else_Directive.html">#else Directive</a>
+Up: <a href="Conditional_Syntax.html">Conditional Syntax</a>
+<hr>
+<h4>The `<samp>#if</samp>' Directive</h4>
+<p>
+The `<samp>#if</samp>' directive in its simplest form consists of <p>
+<pre>
+	#if <i>expression</i>
+	<i>controlled text</i>
+	#endif /* <i>expression</i> */
+</pre>
+<p>
+The comment following the `<samp>#endif</samp>' is not required, but it is a good practice because it helps people match the `<samp>#endif</samp>' to the corresponding `<samp>#if</samp>'. Such comments should always be used, except in short conditionals that are not nested. In fact, you can put anything at all after the `<samp>#endif</samp>' and it will be ignored by the GNU C preprocessor, but only comments are acceptable in ANSI Standard C. <p>
+<i>expression</i> is a C expression of integer type, subject to stringent restrictions. It may contain <p>
+<ul>
+<li><p>
+Integer constants, which are all regarded as <code>long</code>  or <code>unsigned long</code> . <p>
+<li><p>
+Character constants, which are interpreted according to the character set and conventions of the machine and operating system on which the preprocessor is running. The GNU C preprocessor uses the C data type `<samp>char</samp>' for these character constants; therefore, whether some character codes are negative is determined by the C compiler used to compile the preprocessor. If it treats `<samp>char</samp>' as signed, then character codes large enough to set the sign bit will be considered negative; otherwise, no character code is considered negative. <p>
+<li><p>
+Arithmetic operators for addition, subtraction, multiplication, division, bitwise operations, shifts, comparisons, and logical operations (`<samp>&amp;&amp;</samp>' and `<samp>||</samp>'). <p>
+<li><p>
+Identifiers that are not macros, which are all treated as zero(!). <p>
+<li><p>
+Macro calls. All macro calls in the expression are expanded before actual computation of the expression's value begins. </ul>
+<p>
+Note that `<samp>sizeof</samp>' operators and <code>enum</code> -type values are not allowed. <code>enum</code> -type values, like all other identifiers that are not taken as macro calls and expanded, are treated as zero. <p>
+The <i>controlled text</i> inside of a conditional can include preprocessing directives. Then the directives inside the conditional are obeyed only if that branch of the conditional succeeds. The text can also contain other conditional groups. However, the `<samp>#if</samp>' and `<samp>#endif</samp>' directives must balance. <p>
+<hr>
+Next: <a href="#else_Directive.html">#else Directive</a>
+Up: <a href="Conditional_Syntax.html">Conditional Syntax</a>
+</body></html>

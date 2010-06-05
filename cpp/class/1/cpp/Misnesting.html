@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Misnesting</h1>
+Node: <a href="Misnesting.html">Misnesting</a>
+Next: <a href="Macro_Parentheses.html">Macro Parentheses</a>
+Prev: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+<hr>
+<h4>Improperly Nested Constructs</h4>
+<p>
+Recall that when a macro is called with arguments, the arguments are substituted into the macro body and the result is checked, together with the rest of the input file, for more macro calls. <p>
+It is possible to piece together a macro call coming partially from the macro body and partially from the actual arguments. For example, <p>
+<pre>
+	#define double(x) (2*(x))
+	#define call_with_1(x) x(1)
+</pre>
+<p>
+would expand `<samp>call_with_1 (double)</samp>' into `<samp>(2*(1))</samp>'. <p>
+Macro definitions do not have to have balanced parentheses. By writing an unbalanced open parenthesis in a macro body, it is possible to create a macro call that begins inside the macro body but ends outside of it. For example, <p>
+<pre>
+	#define strange(file) fprintf (file, "%s %d",
+	...
+	strange(stderr) p, 35)
+</pre>
+<p>
+This bizarre example expands to `<samp>fprintf (stderr, "%s %d", p, 35)</samp>'! <p>
+<hr>
+Next: <a href="Macro_Parentheses.html">Macro Parentheses</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+</body></html>

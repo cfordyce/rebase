@@ -1,0 +1,53 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Swallow Semicolon</h1>
+Node: <a href="Swallow_Semicolon.html">Swallow Semicolon</a>
+Next: <a href="Side_Effects.html">Side Effects</a>
+Prev: <a href="Macro_Parentheses.html">Macro Parentheses</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+<hr>
+<h4>Swallowing the Semicolon</h4>
+<p>
+Often it is desirable to define a macro that expands into a compound statement. Consider, for example, the following macro, that advances a pointer (the argument `<samp>p</samp>' says where to find it) across whitespace characters: <p>
+<pre>
+	#define SKIP_SPACES (p, limit)  \
+	{ register char *lim = (limit); \
+	  while (p != lim) {            \
+	    if (*p++ != ' ') {          \
+	      p--; break; }}}
+</pre>
+<p>
+Here Backslash-Newline is used to split the macro definition, which must be a single line, so that it resembles the way such C code would be laid out if not part of a macro definition. <p>
+A call to this macro might be `<samp>SKIP_SPACES (p, lim)</samp>'. Strictly speaking, the call expands to a compound statement, which is a complete statement with no need for a semicolon to end it. But it looks like a function call. So it minimizes confusion if you can use it like a function call, writing a semicolon afterward, as in `<samp>SKIP_SPACES (p, lim);</samp>' <p>
+But this can cause trouble before `<samp>else</samp>' statements, because the semicolon is actually a null statement. Suppose you write <p>
+<pre>
+	if (*p != 0)
+	  SKIP_SPACES (p, lim);
+	else ...
+</pre>
+<p>
+The presence of two statements---the compound statement and a null statement---in between the `<samp>if</samp>' condition and the `<samp>else</samp>' makes invalid C code. <p>
+The definition of the macro `<samp>SKIP_SPACES</samp>' can be altered to solve this problem, using a `<samp>do ... while</samp>' statement. Here is how: <p>
+<pre>
+	#define SKIP_SPACES (p, limit)     \
+	do { register char *lim = (limit); \
+	     while (p != lim) {            \
+	       if (*p++ != ' ') {          \
+	         p--; break; }}}           \
+	while (0)
+</pre>
+<p>
+Now `<samp>SKIP_SPACES (p, lim);</samp>' expands into <p>
+<pre>
+	do {...} while (0);
+</pre>
+<p>
+which is one statement. <p>
+<hr>
+Next: <a href="Side_Effects.html">Side Effects</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+</body></html>

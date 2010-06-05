@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Undefining</h1>
+Node: <a href="Undefining.html">Undefining</a>
+Next: <a href="Redefining.html">Redefining</a>
+Prev: <a href="Concatenation.html">Concatenation</a>
+Up: <a href="Macros.html">Macros</a>
+<hr>
+<h3>Undefining Macros</h3>
+<p>
+To <i>undefine</i> a macro means to cancel its definition. This is done with the `<samp>#undef</samp>' directive. `<samp>#undef</samp>' is followed by the macro name to be undefined. <p>
+Like definition, undefinition occurs at a specific point in the source file, and it applies starting from that point. The name ceases to be a macro name, and from that point on it is treated by the preprocessor as if it had never been a macro name. <p>
+For example, <p>
+<pre>
+	#define FOO 4
+	x = FOO;
+	#undef FOO
+	x = FOO;
+</pre>
+<p>
+expands into <p>
+<pre>
+	x = 4;
+	
+	x = FOO;
+</pre>
+<p>
+In this example, `<samp>FOO</samp>' had better be a variable or function as well as (temporarily) a macro, in order for the result of the expansion to be valid C code. <p>
+The same form of `<samp>#undef</samp>' directive will cancel definitions with arguments or definitions that don't expect arguments. The `<samp>#undef</samp>' directive has no effect when used on a name not currently defined as a macro. <p>
+<hr>
+Next: <a href="Redefining.html">Redefining</a>
+Up: <a href="Macros.html">Macros</a>
+</body></html>

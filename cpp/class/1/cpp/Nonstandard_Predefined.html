@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Nonstandard Predefined</h1>
+Node: <a href="Nonstandard_Predefined.html">Nonstandard Predefined</a>
+Prev: <a href="Standard_Predefined.html">Standard Predefined</a>
+Up: <a href="Predefined.html">Predefined</a>
+<hr>
+<h4>Nonstandard Predefined Macros</h4>
+<p>
+The C preprocessor normally has several predefined macros that vary between machines because their purpose is to indicate what type of system and machine is in use. This manual, being for all systems and machines, cannot tell you exactly what their names are; instead, we offer a list of some typical ones. You can use `<samp>cpp -dM</samp>' to see the values of predefined macros; see  <a href="Invocation.html">Invocation</a>. <p>
+Some nonstandard predefined macros describe the operating system in use, with more or less specificity. For example, <p>
+<dl>
+<dt>
+<code>unix</code> <dd>
+`<samp>unix</samp>' is normally predefined on all Unix systems. <p>
+<dt>
+<code>BSD</code> <dd>
+`<samp>BSD</samp>' is predefined on recent versions of Berkeley Unix (perhaps only in version 4.3). </dl>
+<p>
+Other nonstandard predefined macros describe the kind of CPU, with more or less specificity. For example, <p>
+<dl>
+<dt>
+<code>vax</code> <dd>
+`<samp>vax</samp>' is predefined on Vax computers. <p>
+<dt>
+<code>mc68000</code> <dd>
+`<samp>mc68000</samp>' is predefined on most computers whose CPU is a Motorola 68000, 68010 or 68020. <p>
+<dt>
+<code>m68k</code> <dd>
+`<samp>m68k</samp>' is also predefined on most computers whose CPU is a 68000, 68010 or 68020; however, some makers use `<samp>mc68000</samp>' and some use `<samp>m68k</samp>'. Some predefine both names. What happens in GNU C depends on the system you are using it on. <p>
+<dt>
+<code>M68020</code> <dd>
+`<samp>M68020</samp>' has been observed to be predefined on some systems that use 68020 CPUs---in addition to `<samp>mc68000</samp>' and `<samp>m68k</samp>', which are less specific. <p>
+<dt>
+<code>_AM29K</code> <dd>
+<dt>
+<code>_AM29000</code> <dd>
+Both `<samp>_AM29K</samp>' and `<samp>_AM29000</samp>' are predefined for the AMD 29000 CPU family. <p>
+<dt>
+<code>ns32000</code> <dd>
+`<samp>ns32000</samp>' is predefined on computers which use the National Semiconductor 32000 series CPU. </dl>
+<p>
+Yet other nonstandard predefined macros describe the manufacturer of the system. For example, <p>
+<dl>
+<dt>
+<code>sun</code> <dd>
+`<samp>sun</samp>' is predefined on all models of Sun computers. <p>
+<dt>
+<code>pyr</code> <dd>
+`<samp>pyr</samp>' is predefined on all models of Pyramid computers. <p>
+<dt>
+<code>sequent</code> <dd>
+`<samp>sequent</samp>' is predefined on all models of Sequent computers. </dl>
+<p>
+These predefined symbols are not only nonstandard, they are contrary to the ANSI standard because their names do not start with underscores. Therefore, the option `<samp>-ansi</samp>' inhibits the definition of these symbols. <p>
+This tends to make `<samp>-ansi</samp>' useless, since many programs depend on the customary nonstandard predefined symbols. Even system header files check them and will generate incorrect declarations if they do not find the names that are expected. You might think that the header files supplied for the Uglix computer would not need to test what machine they are running on, because they can simply assume it is the Uglix; but often they do, and they do so using the customary names. As a result, very few C programs will compile with `<samp>-ansi</samp>'. We intend to avoid such problems on the GNU system. <p>
+What, then, should you do in an ANSI C program to test the type of machine it will run on? <p>
+GNU C offers a parallel series of symbols for this purpose, whose names are made from the customary ones by adding `<samp>__</samp>' at the beginning and end. Thus, the symbol <code>__vax__</code>  would be available on a Vax, and so on. <p>
+The set of nonstandard predefined names in the GNU C preprocessor is controlled (when <code>cpp</code>  is itself compiled) by the macro `<samp>CPP_PREDEFINES</samp>', which should be a string containing `<samp>-D</samp>' options, separated by spaces. For example, on the Sun 3, we use the following definition: <p>
+<pre>
+	#define CPP_PREDEFINES "-Dmc68000 -Dsun -Dunix -Dm68k"
+</pre>
+<p>
+This macro is usually specified in `<tt>tm.h</tt>'. <p>
+<hr>
+Up: <a href="Predefined.html">Predefined</a>
+</body></html>

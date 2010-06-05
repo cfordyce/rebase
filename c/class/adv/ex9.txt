@@ -1,0 +1,33 @@
+Charles Fordyce
+
+C Programming Advanced
+Exercise 9
+
+Very sorry about the funky formatting.  
+I'm using xemacs and it just treats text as one long line unless I add carriage returns.
+
+
+The Long Jump / Signal Handling program plays out like this.  
+First, signal() is called which registers a new signal handler that acts on the SIGABRT signal.  ]
+This initial call returns SIG_DFL to the variable 'rcode'.  
+Then we test the value stored in 'rcode' and establish if the call to signal() was successful or not.  
+The we call setjmp() which saves the current stack context/environment for later use by longjmp().  
+
+We then test the return value of setjmp(), which is stored in the variable 'error'.  
+If 'error' is empty, we send the SIGABRT signal to the program via raise().  
+Then raise() calls sig_handler().  
+This time the signal sent to sig_handler() is the real SIGABRT.  
+signal() is called again, but with a real signal (SIGABRT).  
+Next, longjump() is called with the program context.  
+The program then resumes where setjmp() was originally called.  
+
+
+
+
+
+
+Thanks,  I enjoyed your class!
+
+Chas
+
+   

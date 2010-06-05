@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Simple Macros</h1>
+Node: <a href="Simple_Macros.html">Simple Macros</a>
+Next: <a href="Argument_Macros.html">Argument Macros</a>
+Prev: <a href="Macros.html">Macros</a>
+Up: <a href="Macros.html">Macros</a>
+<hr>
+<h3>Simple Macros</h3>
+<p>
+A <i>simple macro</i> is a kind of abbreviation. It is a name which stands for a fragment of code. Some people refer to these as <i>manifest constants</i>. <p>
+Before you can use a macro, you must <i>define</i> it explicitly with the `<samp>#define</samp>' directive. `<samp>#define</samp>' is followed by the name of the macro and then the code it should be an abbreviation for. For example, <p>
+<pre>
+	#define BUFFER_SIZE 1020
+</pre>
+<p>
+defines a macro named `<samp>BUFFER_SIZE</samp>' as an abbreviation for the text `<samp>1020</samp>'. If somewhere after this `<samp>#define</samp>' directive there comes a C statement of the form <p>
+<pre>
+	foo = (char *) xmalloc (BUFFER_SIZE);
+</pre>
+<p>
+then the C preprocessor will recognize and <i>expand</i> the macro `<samp>BUFFER_SIZE</samp>', resulting in <p>
+<pre>
+	foo = (char *) xmalloc (1020);
+</pre>
+<p>
+The use of all upper case for macro names is a standard convention. Programs are easier to read when it is possible to tell at a glance which names are macros. <p>
+Normally, a macro definition must be a single line, like all C preprocessing directives. (You can split a long macro definition cosmetically with Backslash-Newline.) There is one exception: Newlines can be included in the macro definition if within a string or character constant. This is because it is not possible for a macro definition to contain an unbalanced quote character; the definition automatically extends to include the matching quote character that ends the string or character constant. Comments within a macro definition may contain Newlines, which make no difference since the comments are entirely replaced with Spaces regardless of their contents. <p>
+Aside from the above, there is no restriction on what can go in a macro body. Parentheses need not balance. The body need not resemble valid C code. (But if it does not, you may get error messages from the C compiler when you use the macro.) <p>
+The C preprocessor scans your program sequentially, so macro definitions take effect at the place you write them. Therefore, the following input to the C preprocessor <p>
+<pre>
+	foo = X;
+	#define X 4
+	bar = X;
+</pre>
+<p>
+produces as output <p>
+<pre>
+	foo = X;
+	
+	bar = 4;
+</pre>
+<p>
+After the preprocessor expands a macro name, the macro's definition body is appended to the front of the remaining input, and the check for macro calls continues. Therefore, the macro body can contain calls to other macros. For example, after <p>
+<pre>
+	#define BUFSIZE 1020
+	#define TABLESIZE BUFSIZE
+</pre>
+<p>
+the name `<samp>TABLESIZE</samp>' when used in the program would go through two stages of expansion, resulting ultimately in `<samp>1020</samp>'. <p>
+This is not at all the same as defining `<samp>TABLESIZE</samp>' to be `<samp>1020</samp>'. The `<samp>#define</samp>' for `<samp>TABLESIZE</samp>' uses exactly the body you specify---in this case, `<samp>BUFSIZE</samp>'---and does not check to see whether it too is the name of a macro. It's only when you <em>use</em> `<samp>TABLESIZE</samp>' that the result of its expansion is checked for more macro names. See <a href="Cascaded_Macros.html">Cascaded Macros</a>. <p>
+<hr>
+Next: <a href="Argument_Macros.html">Argument Macros</a>
+Up: <a href="Macros.html">Macros</a>
+</body></html>

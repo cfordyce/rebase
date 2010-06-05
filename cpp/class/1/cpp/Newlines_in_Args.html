@@ -1,0 +1,28 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Newlines in Args</h1>
+Node: <a href="Newlines_in_Args.html">Newlines in Args</a>
+Prev: <a href="Cascaded_Macros.html">Cascaded Macros</a>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+<hr>
+<h3>Newlines in Macro Arguments</h3>
+<p>
+Traditional macro processing carries forward all newlines in macro arguments into the expansion of the macro. This means that, if some of the arguments are substituted more than once, or not at all, or out of order, newlines can be duplicated, lost, or moved around within the expansion. If the expansion consists of multiple statements, then the effect is to distort the line numbers of some of these statements. The result can be incorrect line numbers, in error messages or displayed in a debugger. <p>
+The GNU C preprocessor operating in ANSI C mode adjusts appropriately for multiple use of an argument---the first use expands all the newlines, and subsequent uses of the same argument produce no newlines. But even in this mode, it can produce incorrect line numbering if arguments are used out of order, or not used at all. <p>
+Here is an example illustrating this problem: <p>
+<pre>
+	#define ignore_second_arg(a,b,c) a; c
+	
+	ignore_second_arg (foo (),
+	                   ignored (),
+	                   syntax error);
+</pre>
+<p>
+The syntax error triggered by the tokens `<samp>syntax error</samp>' results in an error message citing line four, even though the statement text comes from line five. <p>
+<hr>
+Up: <a href="Macro_Pitfalls.html">Macro Pitfalls</a>
+</body></html>

@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - Global Actions</h1>
+Node: <a href="Global_Actions.html">Global Actions</a>
+Next: <a href="Directives.html">Directives</a>
+Prev: <a href="Top.html">Top</a>
+Up: <a href="Top.html">Top</a>
+<hr>
+<h3>Transformations Made Globally</h3>
+<p>
+Most C preprocessor features are inactive unless you give specific directives to request their use. (Preprocessing directives are lines starting with `<samp>#</samp>'; see <a href="Directives.html">Directives</a>). But there are three transformations that the preprocessor always makes on all the input it receives, even in the absence of directives. <p>
+<ul>
+<li><p>
+All C comments are replaced with single spaces. <p>
+<li><p>
+Backslash-Newline sequences are deleted, no matter where. This feature allows you to break long lines for cosmetic purposes without changing their meaning. <p>
+<li><p>
+Predefined macro names are replaced with their expansions (see <a href="Predefined.html">Predefined</a>). </ul>
+<p>
+The first two transformations are done <em>before</em> nearly all other parsing and before preprocessing directives are recognized. Thus, for example, you can split a line cosmetically with Backslash-Newline anywhere (except when trigraphs are in use; see below). <p>
+<pre>
+	/*
+	*/ # /*
+	*/ defi\
+	ne FO\
+	O 10\
+	20
+</pre>
+<p>
+is equivalent into `<samp>#define FOO 1020</samp>'. You can split even an escape sequence with Backslash-Newline. For example, you can split <code>"foo\bar"</code>  between the `<samp>\</samp>' and the `<samp>b</samp>' to get <p>
+<pre>
+	"foo\\
+	bar"
+</pre>
+<p>
+This behavior is unclean: in all other contexts, a Backslash can be inserted in a string constant as an ordinary character by writing a double Backslash, and this creates an exception. But the ANSI C standard requires it. (Strict ANSI C does not allow Newlines in string constants, so they do not consider this a problem.) <p>
+But there are a few exceptions to all three transformations. <p>
+<ul>
+<li><p>
+C comments and predefined macro names are not recognized inside a `<samp>#include</samp>' directive in which the file name is delimited with `<samp>&lt;</samp>' and `<samp>&gt;</samp>'. <p>
+<li><p>
+C comments and predefined macro names are never recognized within a character or string constant. (Strictly speaking, this is the rule, not an exception, but it is worth noting here anyway.) <p>
+<li><p>
+Backslash-Newline may not safely be used within an ANSI ``trigraph''. Trigraphs are converted before Backslash-Newline is deleted. If you write what looks like a trigraph with a Backslash-Newline inside, the Backslash-Newline is deleted as usual, but it is then too late to recognize the trigraph. <p>
+This exception is relevant only if you use the `<samp>-trigraphs</samp>' option to enable trigraph processing. See <a href="Invocation.html">Invocation</a>. </ul>
+<p>
+<hr>
+Next: <a href="Directives.html">Directives</a>
+Up: <a href="Top.html">Top</a>
+</body></html>

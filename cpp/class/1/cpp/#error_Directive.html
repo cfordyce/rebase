@@ -1,0 +1,35 @@
+<html>
+<head>
+<title>The C Preprocessor</title>
+<link rel=StyleSheet href=../gnuinfo.css>
+</head>
+<body>
+<h1>The C Preprocessor - #error Directive</h1>
+Node: <a href="#error_Directive.html">#error Directive</a>
+Prev: <a href="Assertions.html">Assertions</a>
+Up: <a href="Conditionals.html">Conditionals</a>
+<hr>
+<h3>The `<samp>#error</samp>' and `<samp>#warning</samp>' Directives</h3>
+<p>
+The directive `<samp>#error</samp>' causes the preprocessor to report a fatal error. The rest of the line that follows `<samp>#error</samp>' is used as the error message. <p>
+You would use `<samp>#error</samp>' inside of a conditional that detects a combination of parameters which you know the program does not properly support. For example, if you know that the program will not run properly on a Vax, you might write <p>
+<pre>
+	#ifdef __vax__
+	#error Won't work on Vaxen.  See comments at get_last_object.
+	#endif
+</pre>
+<p>
+See <a href="Nonstandard_Predefined.html">Nonstandard Predefined</a>, for why this works. <p>
+If you have several configuration parameters that must be set up by the installation in a consistent way, you can use conditionals to detect an inconsistency and report it with `<samp>#error</samp>'. For example, <p>
+<pre>
+	#if HASH_TABLE_SIZE % 2 == 0 || HASH_TABLE_SIZE % 3 == 0 \
+	    || HASH_TABLE_SIZE % 5 == 0
+	#error HASH_TABLE_SIZE should not be divisible by a small prime
+	#endif
+</pre>
+<p>
+The directive `<samp>#warning</samp>' is like the directive `<samp>#error</samp>', but causes the preprocessor to issue a warning and continue preprocessing. The rest of the line that follows `<samp>#warning</samp>' is used as the warning message. <p>
+You might use `<samp>#warning</samp>' in obsolete header files, with a message directing the user to the header file which should be used instead. <p>
+<hr>
+Up: <a href="Conditionals.html">Conditionals</a>
+</body></html>
