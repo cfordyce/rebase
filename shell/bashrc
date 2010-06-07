@@ -1,0 +1,100 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+##
+# User specific environment and startup programs
+##
+export PS1='\n\u \w\n\A > '
+
+##
+# colorize man pages and grep
+##
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'                           
+export LESS_TERMCAP_so=$'\E[01;44;33m'                                 
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+export GREP_COLOR='1;37;41'
+alias grep='/bin/grep --color=auto'
+
+##
+# Perforce
+##
+export P4PORT='TPPERFORCE01:1666'
+export P4USER='charles.fordyce'
+export P4CLIENT='charles.fordyce_ws-cfordyce'
+export P4EDITOR='xemacs -bg white'
+#export P4CONFIG='/home/chas/Perforce/tpperforce01_1666/charles.fordyce_ws-cfordyce/p4config'
+
+##
+# Java
+##
+export JDK_HOME='/usr/java/jdk1.6.0_16'
+export JAVA_HOME=$JDK_HOME
+export IDEA_JDK=$JDK_HOME
+#export GROOVY_HOME='/usr/groovy'
+
+##
+# Maven
+##
+export M2_HOME='/home/chas/Perforce/tpperforce01_1666/charles.fordyce_ws-cfordyce/maven/apache-maven-2.1.0'
+JMX="-Dcom.sun.management.jmxremote"
+JMX="$JMX -Dcom.sun.management.jmxremote.port=8007"
+JMX="$JMX -Dcom.sun.management.jmxremote.authenticate=false"
+JMX="$JMX -Dcom.sun.management.jmxremote.ssl=false"
+DEBUG="-Xdebug -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5007"
+MEMORY="-Xms1564m -Xmx1564m"
+export MAVEN_OPTS="$MEMORY $JMX $DEBUG -Djetty.home=$CURDIR"
+# export MAVEN_OPTS=-Xmx1564m
+# mvn clean install process-sources -P deps,deps-sources,deps-docs
+
+
+PATH=$PATH:$HOME/bin:$HOME/Apps/idea-9886/bin:$HOME/Apps/p4v-2009.1.219330/bin:$GROOVY_HOME/bin:$M2_HOME/bin:/home/chas/.gem/ruby/1.8/bin
+export PATH
+
+##
+# SSH Key Pass phrases
+##
+SSH_ENV="$HOME/.ssh/environment"
+
+function start_agent {
+  echo "Initializing new SSH agent..."
+  /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+  echo succeeded
+  chmod 600 "${SSH_ENV}"
+  . "${SSH_ENV}" > /dev/null
+  /usr/bin/ssh-add;
+}
+
+# Source SSH settings, if applicable
+if [ -f "${SSH_ENV}" ]; then
+  . "${SSH_ENV}" > /dev/null
+  #ps ${SSH_AGENT_PID} doesn't work under cywgin
+  ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+    start_agent;
+  }
+else
+  start_agent;
+fi
+
+##
+# Servers
+##
+export TLIC1='...'
+
+##
+# User specific aliases and functions
+##
+alias sl='ls -l'
+alias lt='ls -latr'
+alias ll='ls -l'
+alias la='ls -la'
+alias xe='/usr/bin/xemacs -bg white -fg black '
+alias tlic1="ssh -l charles.fordyce $TLIC1"
+
