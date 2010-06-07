@@ -11,7 +11,7 @@ my @city = map(substr($_,7,index($_, '.')-7), @url);
 my %all;
 @all{@city} = @url;
 
-my @qa = qw/honolulu humboldt losangeles miami orangecounty portland seattle sfbay ventura washingtondc vancouver victoria/;
+my @qa = qw/honolulu humboldt losangeles miami orangecounty portland sandiego santabarbara seattle sfbay ventura washingtondc vancouver victoria/;
 
 my %queries = ( #"993 Porsche" => "search/cta?query=(1995%7C1996%7C1997%7C1998)+Porsche+911&amp;srchType=T&amp;format=rss",
 	       "Sof QA Mgr/Lead" => "search/sof?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss",
