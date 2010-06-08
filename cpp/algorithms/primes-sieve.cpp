@@ -14,10 +14,11 @@ int main(void) {
   for (int a=2; a < SIZE; ++a)
     nums[a] = a;
   
-  for (int a=2; a < SIZE; ++a)    
-    for (int b=a; b <= SIZE; ++b)
-      if (a*b <= SIZE)
-	nums[a*b] = NOT;
+  for (int a=2; a < SIZE; ++a)
+    if (NOT != nums[a])
+      for (int b=a; b <= SIZE; ++b)
+	if (a*b <= SIZE)
+	  nums[a*b] = NOT;
 
   for (int a=0; a < SIZE; ++a)
     if (NOT != nums[a])
