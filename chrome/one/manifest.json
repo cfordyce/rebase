@@ -1,0 +1,12 @@
+{
+  "name": "Chas and Dad's Extension One",
+    "version": "1.0",
+    "description": "Our first extension.",
+    "background_page": "background.html",
+    "browser_action": {
+    "default_icon": "lamp.png",
+      "default_title": "Some tooltip info.",
+      "default_popup": "popup.html"
+      },
+    "permissions": []    
+}
