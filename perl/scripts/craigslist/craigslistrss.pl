@@ -7,29 +7,51 @@ for (<DATA>) {
   chomp;
   push @url, $_;
 }
-my @city = map(substr($_,7,index($_, '.')-7), @url);
+my @allcity = map(substr($_,7,index($_, '.')-7), @url);
+@allcity = sort @allcity;
 my %all;
-@all{@city} = @url;
+@all{@allcity} = @url;
 
-my @qa = qw/honolulu humboldt losangeles miami orangecounty portland sandiego santabarbara seattle sfbay ventura washingtondc vancouver victoria/;
+my @qacity = qw/honolulu humboldt losangeles miami orangecounty portland sandiego santabarbara seattle sfbay ventura washingtondc vancouver victoria/;
 
-my %queries = ( #"993 Porsche" => "search/cta?query=(1995%7C1996%7C1997%7C1998)+Porsche+911&amp;srchType=T&amp;format=rss",
-	       "Sof QA Mgr/Lead" => "search/sof?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss",
-	       "Eng QA Mgr/Lead" => "search/eng?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss");
+my %queries = ('911' => {'993 Porsche' => 'search/cta?query=(1995%7C1996%7C1997%7C1998)+Porsche+911&amp;srchType=T&amp;format=rss'},
+	       'qa' => {'Sof QA Mgr/Lead' => 'search/sof?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss',
+			'Eng QA Mgr/Lead' => 'search/eng?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss'},);
 
-for (@qa) {
-    my $city = $_;
-    my $pref = ucfirst substr $city,0,5;
-    my $url = $all{$city};
+my ($where, $what) = $ARGV[0] =~ /qa/ ? (\@qacity, $queries{'qa'}) : (\@allcity, $queries{'911'});
 
-    while (my ($k,$v) = each %queries) {
-      my $pair = $url.$v;
-      print "\t<outline text=\"$pref $k\" title=\"$pref $k\" type=\"rss\" xmlUrl=\"$pair\" htmlUrl=\"$pair\"/>";
-      print "\n";
-    }
+&header();
+
+for (@{$where}) {
+  my $city = $_;
+  my $pref = ucfirst substr $city,0,5;
+  my $url = $all{$city};
+
+  while (my ($k,$v) = each %{$what}) {
+    my $pair = $url.$v;
+    print "\t<outline text=\"$pref $k\" title=\"$pref $k\" type=\"rss\" xmlUrl=\"$pair\" htmlUrl=\"$pair\"/>";
+    print "\n";
   }
+}
+
+&footer();
 
 
+sub header {
+print '<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+    <head>
+        <title>cacci subscriptions in Google Reader</title>
+    </head>
+    <body>
+'
+}
+
+sub footer {
+  print '    </body>
+</opml>
+'
+}
 
 __DATA__
 http://atlanta.craigslist.org/
