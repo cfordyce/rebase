@@ -98,3 +98,11 @@ alias la='ls -la'
 alias xe='/usr/bin/xemacs -bg white -fg black '
 alias tlic1="ssh -l charles.fordyce $TLIC1"
 
+##
+# Disk usage helpers
+##
+#accessed60Days find /usr/qa -type f -size +1M -atime +60 -mtime +60 -exec ls -lh {} \; | awk '{ printf "%-8s %3s %02d %5s  %s\n",$5,$6,$7,$8,$9 }' 
+#accessed30Days find /usr/qa -type f -size +1M -atime +30 -mtime +30 -exec ls -lh {} \; | awk '{ printf "%-8s %3s %02d %5s  %s\n",$5,$6,$7,$8,$9 }'
+#findPretty find . -type f -name nohup.out  -exec ls -lh {} \; | awk '{ printf "%-8s %3s %02d %5s  %s\n",$5,$6,$7,$8,$9 }''
+#disk usage with total, human read: sudo du -ch
+#disk free, human read: df -kh
