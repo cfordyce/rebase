@@ -1,41 +1,48 @@
 #!/usr/bin/perl -w
 
 use strict;
-
-my @url;
+my %all;
 for (<DATA>) {
   chomp;
-  push @url, $_;
+  $all{substr($_,7,index($_, '.')-7)} = $_;
 }
-my @allcity = map(substr($_,7,index($_, '.')-7), @url);
-@allcity = sort @allcity;
-my %all;
-@all{@allcity} = @url;
+my @allcity = sort keys %all;
 
 my @qacity = qw/honolulu humboldt losangeles miami orangecounty portland sandiego santabarbara seattle sfbay ventura washingtondc vancouver victoria/;
 
-my %queries = ('911' => {'993 Porsche' => 'search/cta?query=(1995%7C1996%7C1997%7C1998)+Porsche+911&amp;srchType=T&amp;format=rss'},
+my %queries = ('invest' => {'Invest' => 'search/?query=investor&amp;catAbb=sss&amp;format=rss'},
+	       '911' => {'993 Porsche' => 'search/cta?query=(1995%7C1996%7C1997%7C1998)+Porsche+911&amp;srchType=T&amp;format=rss'},
 	       'qa' => {'Sof QA Mgr/Lead' => 'search/sof?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss',
 			'Eng QA Mgr/Lead' => 'search/eng?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss'},);
 
-my ($where, $what) = $ARGV[0] =~ /qa/ ? (\@qacity, $queries{'qa'}) : (\@allcity, $queries{'911'});
+my ($where, $what) = (0,0);
 
-&header();
-
-for (@{$where}) {
-  my $city = $_;
-  my $pref = ucfirst substr $city,0,5;
-  my $url = $all{$city};
-
-  while (my ($k,$v) = each %{$what}) {
-    my $pair = $url.$v;
-    print "\t<outline text=\"$pref $k\" title=\"$pref $k\" type=\"rss\" xmlUrl=\"$pair\" htmlUrl=\"$pair\"/>";
-    print "\n";
-  }
+if ($ARGV[0] =~ /qa/) {
+  ($where, $what) = (\@qacity, $queries{'qa'});
+} elsif ($ARGV[0] =~ /911/) {
+  ($where, $what) = (\@allcity, $queries{'911'});
+} elsif ($ARGV[0] =~ /invest/) {
+  ($where, $what) = (\@allcity, $queries{'invest'});
 }
 
-&footer();
+if (0 != $where && 0 != $what) {
 
+  &header();
+
+  for (@{$where}) {
+    my $city = $_;
+    my $pref = ucfirst substr $city,0,5;
+    my $url = $all{$city};
+
+    while (my ($k,$v) = each %{$what}) {
+      my $pair = $url.$v;
+      print "\t<outline text=\"$pref $k\" title=\"$pref $k\" type=\"rss\" xmlUrl=\"$pair\" htmlUrl=\"$pair\"/>";
+      print "\n";
+    }
+  }
+
+  &footer();
+}
 
 sub header {
 print '<?xml version="1.0" encoding="UTF-8"?>
