@@ -4,10 +4,10 @@
 
 #include <iostream>
 
-#define SIZE 100
-#define NOT 0
-
 int main(void) {
+
+  const int SIZE = 100;
+  const int NOT = 0;
   
   int nums[SIZE] = {NOT};
 
