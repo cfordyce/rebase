@@ -10,7 +10,7 @@ my @allcity = sort keys %all;
 
 my @qacity = qw/honolulu humboldt losangeles miami orangecounty portland sandiego santabarbara seattle sfbay ventura washingtondc vancouver victoria/;
 
-my %queries = ('invest' => {'Invest' => 'search/?query=investor&amp;catAbb=sss&amp;format=rss'},
+my %queries = ('invest' => {'Invest' => 'search/?query=investor+-showroom+-car+-auto&amp;catAbb=sss&amp;format=rss'},
 	       '911' => {'993 Porsche' => 'search/cta?query=(1995%7C1996%7C1997%7C1998)+Porsche+911&amp;srchType=T&amp;format=rss'},
 	       'qa' => {'Sof QA Mgr/Lead' => 'search/sof?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss',
 			'Eng QA Mgr/Lead' => 'search/eng?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss'},);
