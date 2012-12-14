@@ -13,7 +13,9 @@ my @qacity = qw/honolulu humboldt losangeles miami orangecounty portland sandieg
 my %queries = ('invest' => {'Invest' => 'search/?query=investor+-showroom+-car+-auto&amp;catAbb=sss&amp;format=rss'},
 	       '911' => {'993 Porsche' => 'search/cta?query=(1995%7C1996%7C1997%7C1998)+Porsche+911&amp;srchType=T&amp;format=rss'},
 	       'qa' => {'Sof QA Mgr/Lead' => 'search/sof?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss',
-			'Eng QA Mgr/Lead' => 'search/eng?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss'},);
+			'Eng QA Mgr/Lead' => 'search/eng?query=QA+(manager%7Clead%7Csenior%7Csr.)&amp;srchType=T&amp;format=rss'},
+		'sj21' => {'San Juan 21' => 'search/boo?query=san+juan+21&amp;srchType=A&amp;minAsk=&amp;maxAsk=&amp;format=rss'},
+);
 
 my ($where, $what) = (0,0);
 
@@ -23,7 +25,11 @@ if ($ARGV[0] =~ /qa/) {
   ($where, $what) = (\@allcity, $queries{'911'});
 } elsif ($ARGV[0] =~ /invest/) {
   ($where, $what) = (\@allcity, $queries{'invest'});
+} elsif ($ARGV[0] =~ /sj21/) {
+  ($where, $what) = (\@allcity, $queries{'sj21'});
 }
+
+my @names = keys %{$what};
 
 if (0 != $where && 0 != $what) {
 
@@ -45,13 +51,13 @@ if (0 != $where && 0 != $what) {
 }
 
 sub header {
-print '<?xml version="1.0" encoding="UTF-8"?>
-<opml version="1.0">
+print "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<opml version=\"1.0\">
     <head>
-        <title>cacci subscriptions in Google Reader</title>
+        <title>$names[0] subscriptions in Google Reader</title>
     </head>
     <body>
-'
+"
 }
 
 sub footer {
